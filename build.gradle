@@ -27,6 +27,15 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.assertj/assertj-core
 	testCompile group: 'org.assertj', name: 'assertj-core', version: '3.6.1'
 
+	// Spring JPA
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'com.h2database:h2'
+
+	// https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
+	compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+
+
+
 }
 
 test {
