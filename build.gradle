@@ -34,8 +34,6 @@ dependencies {
 	// https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
 	compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 
-
-
 }
 
 test {

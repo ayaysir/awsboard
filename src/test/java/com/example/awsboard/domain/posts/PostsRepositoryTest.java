@@ -21,7 +21,7 @@ public class PostsRepositoryTest {
     }
 
     @Test
-    public void fdkj() {
+    public void 게시글저장_불러오기() {
         // given
         String title = "Test title";
         String content = "Test content";
