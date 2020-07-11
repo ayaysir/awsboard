@@ -1,5 +1,6 @@
-package com.example.awsboard.web.dto;
+package com.example.awsboard.web.dto.toy;
 
+import com.example.awsboard.web.dto.toy.Car;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

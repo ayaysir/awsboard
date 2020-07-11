@@ -1,4 +1,4 @@
-package com.example.awsboard.web.dto;
+package com.example.awsboard.web.dto.toy;
 
 import lombok.Builder;
 import lombok.Getter;
