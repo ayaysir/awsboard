@@ -34,6 +34,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
 	compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 
+	// thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 }
 
 test {

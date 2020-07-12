@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/common :: html-head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+          crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div th:replace="fragments/common :: header">-- thymeleaf header will be inserted here. --</div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2>공지사항</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- 목록 출력 영역 -->
+                <table class="table table-horizontal table-bordered">
+                    <thead class="thead-strong">
+                        <tr>
+                            <th>번호</th>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>수정일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="post: ${posts}">
+                            <td th:text="${post.id}">0</td>
+                            <td><span th:text="${post.title}">title</span> <a th:href="@{'/posts/update/' + ${post.id}}">[EDIT]<a/></td>
+                            <td th:text="${post.author}">author</td>
+                            <td th:text="${post.modifiedDate}">2000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+
+            </div>
+            <div class="col-md-2">
+                <a href="/posts/save" role="button" class="btn btn-primary float-right">글 등록</a>
+            </div>
+        </div>
+
+
+
+
+
+        <div th:replace="fragments/common :: footer">-- thymeleaf footer will be inserted here. --</div>
+    </div>
+
+</body>
+</html>
