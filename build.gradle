@@ -44,6 +44,10 @@ dependencies {
 	// spring-session-jdbc
 	compile 'org.springframework.session:spring-session-jdbc'
 
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
+	testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '5.3.3.RELEASE'
+
+
 }
 
 test {
