@@ -30,3 +30,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### OUATH 설정 파일 넣지 마라 ###
+application-oauth.properties
