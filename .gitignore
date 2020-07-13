@@ -33,3 +33,6 @@ out/
 
 ### OUATH 설정 파일 넣지 마라 ###
 application-oauth.properties
+
+## .DS_STORE ##
+.DS_Store
