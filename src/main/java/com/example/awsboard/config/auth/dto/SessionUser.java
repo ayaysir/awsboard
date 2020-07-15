@@ -15,10 +15,12 @@ import java.io.Serializable;
 public class SessionUser implements Serializable {
 
     private String name, email, picture;
+    private Long id;
 
     public SessionUser(User user) {
         this.name = user.getName();
         this.email = user.getEmail();
         this.picture = user.getPicture();
+        this.id = user.getId();
     }
 }
