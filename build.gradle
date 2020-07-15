@@ -47,6 +47,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
 	testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '5.3.3.RELEASE'
 
+	// https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.1'
+
 
 }
 
