@@ -22,9 +22,16 @@ notifications:
 
 
 before_deploy:
-  - zip -r awsboard *
-  - mkdir -p deploy
-  - mv awsboard.zip deploy/awsboard.zip
+#  - zip -r awsboard *
+#  - mkdir -p deploy
+#  - mv awsboard.zip deploy/awsboard.zip
+  - mkdir -p before-deploy
+  - cp scripts/*.sh before-deploy/
+  - cp appspec.yml before-deploy/
+  - cp build/libs/*.jar before-deploy/
+  - cd before-deploy && zip -r before-deploy * # before-deploy로 이동 후 전체 압축
+  - cd ../ && mkdir -p deploy
+  - mv before-deploy/before-deploy.zip deploy/awsboard.zip
 
 deploy:
   - provider: s3
