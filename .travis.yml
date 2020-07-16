@@ -40,9 +40,10 @@ deploy:
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
+    bucket: springboot-awsboard-build
     key: awsboard.zip
     bundle_type: zip
-    application: awsboard-1
+    application: awsboard-1 # 웹 콘솔에서 등록한 코드디플로이 애플리케이션
     deployment_group: awsboard-codedeploy-group
     region: ap-northeast-2
     wait-until-deployed: true
