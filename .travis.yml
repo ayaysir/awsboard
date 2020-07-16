@@ -20,3 +20,20 @@ notifications:
     recipients:
       - ayaysir0@naver.com
 
+
+before_deploy:
+  - zip -r awsboard *
+  - mkdir -p deploy
+  - mv awsboard.zip deploy/awsboard.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: springboot-awsboard-build
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private
+    local_dir: deploy
+    wait-until-deploy: true
+
