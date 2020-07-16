@@ -43,17 +43,38 @@ public class IndexController {
             model.addAttribute("userImg", user.getPicture());
             model.addAttribute("userEmail", user.getEmail());
             model.addAttribute("userId", user.getId());
+
+            return "posts-save";
+        } else {
+            return "redirect:/";
         }
-        return "posts-save";
+
     }
 
     @GetMapping("/posts/update/{id}")
-    public String postUpdate(@PathVariable Long id, Model model) {
+    public String postUpdate(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser) {
 
         PostsResponseDTO dto = postsService.findById(id);
         model.addAttribute("post", dto);
 
+        if(!dto.getAuthorId().equals(loginUser.getId())) {
+            return "redirect:/";
+        }
+
         return "posts-update";
+    }
+
+    @GetMapping("/posts/view/{id}")
+    public String postView(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser) {
+
+        PostsResponseDTO dto = postsService.findById(id);
+        model.addAttribute("post", dto);
+        model.addAttribute("loginUser", loginUser);
+
+        System.out.println(">> DTO: " + dto.getAuthorId());
+        System.out.println(">> LoginUser: " + loginUser.getId());
+
+        return "posts-view";
     }
 
 }

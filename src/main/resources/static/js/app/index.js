@@ -19,7 +19,8 @@ const main = {
         const data = {
             title: $("#input-title").val(),
             author: $("#input-author").val(),
-            content: $("#txt-content").val()
+            content: $("#txt-content").val(),
+            authorId: $("#user-id").val()
         }
 
         $.ajax({

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/common :: html-head">
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+          crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div th:replace="fragments/common :: header">-- thymeleaf header will be inserted here. --</div>
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1 th:text="${post.id + ': ' + post.title}">게시글 조회</h1>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-form-label" for="input-id">글 번호</label>
+                <input type="text" class="form-control" readonly id="input-id" th:value="${post.id}">
+            </div>
+
+            <div class="form-group">
+                <label class="col-form-label" for="input-author">작성자</label>
+                <input type="text" class="form-control" id="input-author" th:value="${post.author}" readonly value="김똑딱">
+            </div>
+
+            <div class="form-group">
+                <label for="txt-content">내용</label>
+                <textarea class="form-control" id="txt-content" rows="3" th:text="${post.content}" readonly>test</textarea>
+            </div>
+
+            <a href="/" role="button" class="btn btn-secondary">목록</a>
+            <a th:if="${loginUser.id eq post.authorId}" role="button" class="btn btn-primary" th:href="${'/posts/update/' + post.id}">수정</a>
+            <button th:if="${loginUser.id eq post.authorId}" class="btn btn-danger" id="btn-delete">삭제</button>
+        </div>
+
+        <div th:replace="fragments/common :: footer">-- thymeleaf footer will be inserted here. --</div>
+    </div>
+
+</body>
+</html>
