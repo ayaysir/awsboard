@@ -14,7 +14,7 @@ cache:
 
 script: "./gradlew clean build"
 
-# CI 실행 완료 시 메일 전송
+# CI 실행 완료 시 메일 전송 ..
 notifications:
   email:
     recipients:
