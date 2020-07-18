@@ -2,8 +2,10 @@ package com.example.awsboard.web;
 
 import com.example.awsboard.config.auth.LoginUser;
 import com.example.awsboard.config.auth.dto.SessionUser;
+import com.example.awsboard.service.posts.NoticeService;
 import com.example.awsboard.service.posts.PostsService;
 import com.example.awsboard.web.dto.PostsResponseDTO;
+import com.example.awsboard.web.dto.notice.NoticeResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,20 +19,25 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
 
     private final PostsService postsService;
+    private final NoticeService noticeService;
     private final HttpSession httpSession;
 
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user) {
         // 글 목록 전송
         model.addAttribute("posts", postsService.findAllDesc());
+        model.addAttribute("boardTitle", "자유게시판");
+        model.addAttribute("requestFrom", "posts");
 
         // 사용자 정보: 위의 @LoginUser 어노테이션으로 대체
         // SessionUser user = (SessionUser) httpSession.getAttribute("user");
+
 
         if(user != null) {
             model.addAttribute("userName", user.getName());
             model.addAttribute("userImg", user.getPicture());
             model.addAttribute("userEmail", user.getEmail());
+            model.addAttribute("isAllowWrite", true);
         }
 
         return "index";
@@ -43,6 +50,7 @@ public class IndexController {
             model.addAttribute("userImg", user.getPicture());
             model.addAttribute("userEmail", user.getEmail());
             model.addAttribute("userId", user.getId());
+            model.addAttribute("requestFrom", "posts");
 
             return "posts-save";
         } else {
@@ -56,6 +64,7 @@ public class IndexController {
 
         PostsResponseDTO dto = postsService.findById(id);
         model.addAttribute("post", dto);
+        model.addAttribute("requestFrom", "posts");
 
         if(!dto.getAuthorId().equals(loginUser.getId())) {
             return "redirect:/";
@@ -70,6 +79,83 @@ public class IndexController {
         PostsResponseDTO dto = postsService.findById(id);
         model.addAttribute("post", dto);
         model.addAttribute("loginUser", loginUser);
+        model.addAttribute("requestFrom", "posts");
+
+        System.out.println(">> DTO: " + dto.getAuthorId());
+        System.out.println(">> LoginUser: " + loginUser.getId());
+
+        return "posts-view";
+    }
+
+    /**
+     * notice
+     */
+
+    @GetMapping("/notice")
+    public String noticeIndex(Model model, @LoginUser SessionUser user) {
+        // 글 목록 전송
+        model.addAttribute("posts", noticeService.findAllDesc());
+        model.addAttribute("boardTitle", "공지사항");
+        model.addAttribute("requestFrom", "notice");
+
+        // 사용자 정보: 위의 @LoginUser 어노테이션으로 대체
+        // SessionUser user = (SessionUser) httpSession.getAttribute("user");
+
+
+        if(user != null) {
+            model.addAttribute("userName", user.getName());
+            model.addAttribute("userImg", user.getPicture());
+            model.addAttribute("userEmail", user.getEmail());
+            model.addAttribute("isAllowWrite", false);
+
+            String userRole = user.getRole();
+            System.out.println(">>>>>>>>>>>>" + userRole);
+
+            if(user.getRole().equalsIgnoreCase("ADMIN")) {
+                model.addAttribute("isAllowWrite", true);
+            }
+        }
+
+        return "index";
+    }
+
+    @GetMapping("/notice/save")
+    public String noticeSave(Model model, @LoginUser SessionUser user) {
+        if(user != null && user.getRole().equalsIgnoreCase("ADMIN")) {
+            model.addAttribute("userName", user.getName());
+            model.addAttribute("userImg", user.getPicture());
+            model.addAttribute("userEmail", user.getEmail());
+            model.addAttribute("userId", user.getId());
+            model.addAttribute("requestFrom", "notice");
+
+            return "posts-save";
+        } else {
+            return "redirect:/";
+        }
+
+    }
+
+    @GetMapping("/notice/update/{id}")
+    public String noticeUpdate(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser) {
+
+        NoticeResponseDTO dto = noticeService.findById(id);
+        model.addAttribute("post", dto);
+        model.addAttribute("requestFrom", "notice");
+
+        if(!dto.getAuthorId().equals(loginUser.getId())) {
+            return "redirect:/";
+        }
+
+        return "posts-update";
+    }
+
+    @GetMapping("/notice/view/{id}")
+    public String noticeView(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser) {
+
+        NoticeResponseDTO dto = noticeService.findById(id);
+        model.addAttribute("post", dto);
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("requestFrom", "notice");
 
         System.out.println(">> DTO: " + dto.getAuthorId());
         System.out.println(">> LoginUser: " + loginUser.getId());

@@ -11,12 +11,12 @@
 </head>
 <body>
     <div class="container">
-        <div th:replace="fragments/common :: header">-- thymeleaf header will be inserted here. --</div>
+        <div th:replace="fragments/common :: header(${requestFrom})">-- thymeleaf header will be inserted here. --</div>
 
 
         <div class="row">
             <div class="col-md-6">
-                <h2>자유게시판</h2>
+                <h2 th:text="${boardTitle}">자유게시판</h2>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
                     <tbody>
                         <tr th:each="post: ${posts}">
                             <td th:text="${post.id}">0</td>
-                            <td><a th:text="${post.title}" th:href="${'/posts/view/' + post.id}">title</a></td>
+                            <td><a th:text="${post.title}" th:href="${'/' + requestFrom + '/view/' + post.id}">title</a></td>
                             <td th:text="${post.author}">author</td>
                             <td th:text="${post.modifiedDate}">2000</td>
                         </tr>
@@ -59,8 +59,8 @@
                     <a href="/oauth2/authorization/naver" role="button"><img src="./nid-button.png" th:src="@{/img/nid-button.png}" alt="네이버 아이디로 로그인" title="네이버 아이디로 로그인" style="height: 30px;"></a>
                 </div>
             </div>
-            <div th:if="${not #strings.isEmpty(userName)}" class="col-md-2">
-                <a href="/posts/save" role="button" class="btn btn-primary float-right">글 등록</a>
+            <div th:if="${isAllowWrite}" class="col-md-2">
+                <a th:href="${'/' + requestFrom + '/save'}" role="button" class="btn btn-primary float-right">글 등록</a>
             </div>
         </div>
 

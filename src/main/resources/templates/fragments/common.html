@@ -13,7 +13,7 @@
     <script data-ad-client="ca-pub-6364767349592629" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
-<div th:fragment="header">
+<div th:fragment="header(currentMenu)">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
         <a class="navbar-brand" href="#">AWS Board</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,14 +22,14 @@
 
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                <li class="nav-item active" th:class="${'nav-item ' + (currentMenu eq 'posts' ? 'active' : '')}">
+                    <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item" th:class="${'nav-item ' + (currentMenu eq 'notice' ? 'active' : '')}">
+                    <a class="nav-link" href="/notice">Notice</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="alert('준비중');">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="alert('준비중');">About</a>
+                    <a class="nav-link" href="https://github.com/ayaysir/awsboard">About</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -38,6 +38,17 @@
             </form>
         </div>
     </nav>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- aws1 -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-6364767349592629"
+         data-ad-slot="7472392887"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 </div>
 <div class="row">
     <div class="col-12">
