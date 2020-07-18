@@ -13,6 +13,14 @@ const main = {
         $("#btn-delete").on("click", e => {
             self.delete()
         })
+
+        if($("#div-content").length != 0) {
+            const content = $("#div-content").text()
+            const expUrl = /(((http(s)?:\/\/)\S+(\.[^(\n|\t|\s,)]+)+)|((http(s)?:\/\/)?(([a-zA-z\-_]+[0-9]*)|([0-9]*[a-zA-z\-_]+)){2,}(\.[^(\n|\t|\s,)]+)+))+/gi
+            const changedContent = content.replace(expUrl, "<a href='$&' target='_blank'>$&</a>")
+            $("#div-content").html(changedContent)
+        }
+
     },
 
     save() {
