@@ -28,6 +28,7 @@ public class Posts extends BaseTimeEntity {
 
     private Long authorId;
 
+
     @Builder // 빌더 패턴 클래스 생성, 생성자에 포함된 필드만 포함
     public Posts(String title, String content, String author, Long authorId) {
         this.title = title;
@@ -40,4 +41,5 @@ public class Posts extends BaseTimeEntity {
         this.title = title;
         this.content = content;
     }
+
 }

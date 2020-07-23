@@ -2,9 +2,11 @@ package com.example.awsboard.web;
 
 import com.example.awsboard.config.auth.LoginUser;
 import com.example.awsboard.config.auth.dto.SessionUser;
+import com.example.awsboard.service.posts.LogService;
 import com.example.awsboard.service.posts.NoticeService;
 import com.example.awsboard.service.posts.PostsService;
 import com.example.awsboard.web.dto.PostsResponseDTO;
+import com.example.awsboard.web.dto.log.LogSaveRequestDTO;
 import com.example.awsboard.web.dto.notice.NoticeResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ public class IndexController {
     private final PostsService postsService;
     private final NoticeService noticeService;
     private final HttpSession httpSession;
+    private final LogService logService;
 
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user) {
@@ -81,8 +84,14 @@ public class IndexController {
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("requestFrom", "posts");
 
-        System.out.println(">> DTO: " + dto.getAuthorId());
-        System.out.println(">> LoginUser: " + loginUser.getId());
+        Long userId = -99l;
+        if(loginUser != null) {
+            System.out.println(">> DTO: " + dto.getAuthorId());
+            System.out.println(">> LoginUser: " + loginUser.getId());
+
+            userId = loginUser.getId();
+        }
+        logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("posts").userId(loginUser.getId()).build());
 
         return "posts-view";
     }
@@ -157,8 +166,14 @@ public class IndexController {
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("requestFrom", "notice");
 
-        System.out.println(">> DTO: " + dto.getAuthorId());
-        System.out.println(">> LoginUser: " + loginUser.getId());
+        Long userId = -99l;
+        if(loginUser != null) {
+            System.out.println(">> DTO: " + dto.getAuthorId());
+            System.out.println(">> LoginUser: " + loginUser.getId());
+
+            userId = loginUser.getId();
+        }
+        logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("posts").userId(loginUser.getId()).build());
 
         return "posts-view";
     }
