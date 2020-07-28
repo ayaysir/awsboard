@@ -174,7 +174,7 @@ public class IndexController {
 
             userId = loginUser.getId();
         }
-        logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("posts").userId(loginUser.getId()).build());
+        logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("notice").userId(loginUser.getId()).build());
 
         return "posts-view";
     }
