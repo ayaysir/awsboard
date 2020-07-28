@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostApiController {
 
     private final PostsService postsService;
+    private final LogApiController logApiController;
 
     @PostMapping("/api/v1/posts")
     public Long save(@RequestBody PostsSaveRequestDTO requestDTO) {
@@ -25,7 +26,9 @@ public class PostApiController {
 
     @GetMapping("/api/v1/posts/{id}")
     public PostsResponseDTO findById(@PathVariable Long id) {
-        return postsService.findById(id);
+        PostsResponseDTO post = postsService.findById(id);
+        post.setViewCount(logApiController.getViewCount("posts", post.getId()));
+        return post;
     }
 
     @DeleteMapping("/api/v1/posts/{id}")

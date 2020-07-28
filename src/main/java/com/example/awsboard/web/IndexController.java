@@ -22,7 +22,6 @@ public class IndexController {
 
     private final PostsService postsService;
     private final NoticeService noticeService;
-    private final HttpSession httpSession;
     private final LogService logService;
 
     @GetMapping("/")
@@ -80,6 +79,7 @@ public class IndexController {
     public String postView(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser) {
 
         PostsResponseDTO dto = postsService.findById(id);
+        dto.setViewCount(logService.getViewCountByBoardNameAndArticleId("posts", dto.getId()));
         model.addAttribute("post", dto);
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("requestFrom", "posts");
@@ -162,6 +162,7 @@ public class IndexController {
     public String noticeView(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser) {
 
         NoticeResponseDTO dto = noticeService.findById(id);
+        dto.setViewCount(logService.getViewCountByBoardNameAndArticleId("notice", dto.getId()));
         model.addAttribute("post", dto);
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("requestFrom", "notice");
