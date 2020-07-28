@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface LogRepository extends JpaRepository<Log, Long> {
 
-    @Query(value = "select * from Log a where a.board_name = :boardName and a.article_id = :articleId", nativeQuery = true)
+    // native query인 경우 테이블 이름도 소문자로 써야함
+    @Query(value = "select * from log a where a.board_name = :boardName and a.article_id = :articleId", nativeQuery = true)
     List<Log> getListGroupByBoardNameAndArticleId(@Param("boardName") String boardName, @Param("articleId") Long articleId);
 }
