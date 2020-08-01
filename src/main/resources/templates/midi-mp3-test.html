@@ -6,7 +6,7 @@
 </head>
 <body>
     <div th:each="mp3: ${mp3List}">
-        <h6 th:text="${mp3}"></h6>
+        <h5 th:text="${mp3}"></h5>
         <audio th:src="${'/api/v1/midi/mp3/' + mp3}" controls preload="false"></audio>
     </div>
 </body>

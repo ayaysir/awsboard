@@ -1,6 +1,7 @@
 package com.example.awsboard.web;
 
 import com.example.awsboard.service.posts.MidiService;
+import com.example.awsboard.util.TimidityRunner;
 import com.example.awsboard.web.dto.midi.MidiRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -76,6 +77,8 @@ public class MidiApiController {
 
             File dest = new File(filePath);
             file.transferTo(dest);
+
+            TimidityRunner.convertMidiToMp3(filePath, mp3Path);
             mp3List.add(mp3Name);
 
         }
