@@ -1,17 +1,17 @@
 package com.example.awsboard.util;
 
 import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class TimidityRunner {
 
     // 여기로 보낼 때 루트 패스 포함해서 보냄.
-    public File convertMidiToMp3(String midiPath) throws IOException {
+    public static Boolean convertMidiToMp3(String midiPath, String mp3Path) throws IOException {
 
-//        String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
-
-        Integer lastIndexOfDot = midiPath.lastIndexOf(".");
-        String wavPath = midiPath.substring(0, lastIndexOfDot) + ".wav";
-        String mp3Path = midiPath.substring(0, lastIndexOfDot) + ".mp3";
+        Integer lastIndexOfDot = mp3Path.lastIndexOf(".");
+        String wavPath = mp3Path.substring(0, lastIndexOfDot) + ".wav";
+//        String mp3Path = midiPath.substring(0, lastIndexOfDot) + ".mp3";
 
         String[] midiCmd = {"timidity", midiPath, "-o", wavPath, "-Ow"};
         ProcessBuilder midiBuilder = new ProcessBuilder(midiCmd);
@@ -48,22 +48,50 @@ public class TimidityRunner {
             File mp3File = new File(mp3Path);
             if(mp3File.exists() && mp3File.length() > 0) {
                 System.out.println(">> Convert succeeded.");
-                return mp3File;
+                wavFile.delete();
+                return true;
             } else {
-                throw new IllegalStateException("Failed to convert mp3 file.");
+                return false;
             }
         } else {
-            throw new IllegalStateException("Failed to convert wave file.");
+            return false;
         }
 
     }
 
-    public static void main(String[] args) throws IOException {
+    public static String getHash(String path) throws IOException, NoSuchAlgorithmException {
+
+        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        FileInputStream fileInputStream = new FileInputStream(path);
+
+        byte[] dataBytes = new byte[1024];
+
+        Integer nRead = 0;
+        while((nRead = fileInputStream.read(dataBytes)) != -1) {
+            messageDigest.update(dataBytes, 0, nRead);
+        }
+
+        byte[] mdBytes = messageDigest.digest();
+
+        StringBuffer stringBuffer = new StringBuffer();
+        for(Integer i = 0; i < mdBytes.length; i++) {
+            stringBuffer.append(Integer.toString((mdBytes[i] & 0xff) + 0x100, 16)).substring(1);
+        }
+
+        return stringBuffer.toString();
+
+    }
+
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
 
         String midiPath = "/Users/yoonbumtae/Documents/midi/canyon.mid";
+        String mp3Path = "/Users/yoonbumtae/Documents/midi/mp3/canyon.mp3";
 
-        TimidityRunner timidityRunner = new TimidityRunner();
-        timidityRunner.convertMidiToMp3(midiPath);
+        File mp3Dir = new File("/Users/yoonbumtae/Documents/midi/mp3/");
+        if(!mp3Dir.exists())    mp3Dir.mkdirs();
+
+        System.out.println(TimidityRunner.getHash(midiPath));
+        TimidityRunner.convertMidiToMp3(midiPath, mp3Path);
 
     }
 }

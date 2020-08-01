@@ -2,10 +2,6 @@ package com.example.awsboard.service.posts;
 
 import com.example.awsboard.domain.notice.Notice;
 import com.example.awsboard.domain.notice.NoticeRepository;
-import com.example.awsboard.web.dto.PostsListResponseDTO;
-import com.example.awsboard.web.dto.PostsResponseDTO;
-import com.example.awsboard.web.dto.PostsSaveRequestDTO;
-import com.example.awsboard.web.dto.PostsUpdateRequestDTO;
 import com.example.awsboard.web.dto.notice.NoticeListResponseDTO;
 import com.example.awsboard.web.dto.notice.NoticeResponseDTO;
 import com.example.awsboard.web.dto.notice.NoticeSaveRequestDTO;

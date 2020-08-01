@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>upload test</title>
+
+</head>
+<body>
+
+    <form method="post" action="/api/v1/midi/test2" enctype="multipart/form-data">
+        <input multiple type="file" name="files">
+        <input name="customTitle" value="eee">
+        <input name="userId" value="33">
+        <button>submit</button>
+    </form>
+</body>
+</html>
