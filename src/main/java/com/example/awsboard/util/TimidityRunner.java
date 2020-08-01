@@ -13,7 +13,7 @@ public class TimidityRunner {
         String wavPath = mp3Path.substring(0, lastIndexOfDot) + ".wav";
 //        String mp3Path = midiPath.substring(0, lastIndexOfDot) + ".mp3";
 
-        String[] midiCmd = {"timidity", midiPath, "-o", wavPath, "-Ow"};
+        String[] midiCmd = {"/usr/local/bin/timidity", midiPath, "-o", wavPath, "-Ow"};
         System.out.println("** run >>>> " + midiCmd[0] + " " + midiCmd[1]
                 + " " + midiCmd[2] + " " + midiCmd[3] + " " + midiCmd[4]);
         ProcessBuilder midiBuilder = new ProcessBuilder(midiCmd);
