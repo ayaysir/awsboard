@@ -14,6 +14,8 @@ public class TimidityRunner {
 //        String mp3Path = midiPath.substring(0, lastIndexOfDot) + ".mp3";
 
         String[] midiCmd = {"timidity", midiPath, "-o", wavPath, "-Ow"};
+        System.out.println("** run >>>> " + midiCmd[0] + " " + midiCmd[1]
+                + " " + midiCmd[2] + " " + midiCmd[3] + " " + midiCmd[4]);
         ProcessBuilder midiBuilder = new ProcessBuilder(midiCmd);
         midiBuilder.redirectErrorStream(true);
 
