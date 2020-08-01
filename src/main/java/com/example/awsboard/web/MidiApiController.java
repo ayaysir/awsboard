@@ -71,6 +71,9 @@ public class MidiApiController {
         String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
         String basePath = rootPath + "/" + "app/midi";
 
+        System.out.println(">>> " + rootPath);
+        System.out.println(">>> " + basePath);
+
         File originalDir = new File(basePath + "/original");
         File mp3Dir = new File(basePath + "/mp3");
         if(!originalDir.exists()) {
