@@ -33,7 +33,7 @@ public class TimidityRunner {
         // wav 파일 생성 후
         File wavFile = new File(wavPath);
         if(wavFile.exists() && wavFile.length() > 0) {
-            String[] lameCmd = {"lame", wavPath, mp3Path};
+            String[] lameCmd = {"/usr/local/bin/lame", wavPath, mp3Path};
             ProcessBuilder lameBuilder = new ProcessBuilder(lameCmd);
             lameBuilder.redirectErrorStream(true);
 
