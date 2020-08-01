@@ -1,21 +1,23 @@
 package com.example.awsboard.web;
 
-import com.example.awsboard.domain.midi.Midi;
 import com.example.awsboard.service.posts.MidiService;
-import com.example.awsboard.util.TimidityRunner;
 import com.example.awsboard.web.dto.midi.MidiRequestDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,30 +46,9 @@ public class MidiApiController {
 
     }
 
-    @PostMapping(DEFAULT_URI + "/test")
-    public String prototype(@RequestParam("midi-file") MultipartFile files) throws Exception {
-        String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
-        String basePath = rootPath + "/" + "app/midi/original";
-
-        File baseDir = new File(basePath);
-        if(!baseDir.exists()) {
-            baseDir.mkdirs();
-            System.out.println("mkdirs");
-        }
-
-        String filePath = basePath + "/" + files.getOriginalFilename();
-
-        System.out.println(files.getOriginalFilename());
-
-        File file = new File(filePath);
-        files.transferTo(file);
-
-        return TimidityRunner.getHash(filePath);
-
-    }
-
     @PostMapping(DEFAULT_URI + "/test2")
-    public List<Boolean> midiPrototype2(@RequestParam("files") List<MultipartFile> files, MidiRequestDTO requestDTO) throws Exception {
+    public ModelAndView midiPrototype(@RequestParam("files") List<MultipartFile> files,
+                                      ModelAndView modelAndView, MidiRequestDTO requestDTO) throws Exception {
         String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
         String basePath = rootPath + "/" + "app/midi";
 
@@ -85,23 +66,60 @@ public class MidiApiController {
             System.out.println("mkdirs: mp3");
         }
 
-        List<Boolean> boolList = new ArrayList<>();
+        List<String> mp3List = new ArrayList<>();
         for(MultipartFile file : files) {
 
             String originalName = file.getOriginalFilename();
             String filePath = basePath + "/original/" + originalName;
-            String mp3Path = basePath + "/mp3/"
-                    + file.getOriginalFilename().substring(0, originalName.lastIndexOf("."))
-                    + ".mp3";
+            String mp3Name = file.getOriginalFilename().substring(0, originalName.lastIndexOf("."));
+            String mp3Path = basePath + "/mp3/" + mp3Name+ ".mp3";
 
             File dest = new File(filePath);
             file.transferTo(dest);
+            mp3List.add(mp3Name);
 
-            boolList.add(TimidityRunner.convertMidiToMp3(filePath, mp3Path));
         }
 
         System.out.println(requestDTO);
-        return boolList;
+        modelAndView.addObject("mp3List", mp3List);
+        modelAndView.setViewName("midi-mp3-test");
+        return modelAndView;
+    }
+
+
+    @GetMapping(DEFAULT_URI + "/mp3/{mp3Name}")
+    @ResponseStatus(HttpStatus.OK)
+    public void mp3Play(ModelAndView modelAndView, @PathVariable String mp3Name,
+                        HttpServletRequest request,
+                        HttpServletResponse response) throws IOException {
+        String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
+        String basePath = rootPath + "/" + "app/midi";
+
+        File initFile = new File(basePath + "/mp3/" + mp3Name + ".mp3");
+
+        String downloadName = mp3Name + ".mp3";
+        String browser = request.getHeader("User-Agent");
+
+        //파일 인코딩
+        if(browser.contains("MSIE") || browser.contains("Trident") || browser.contains("Chrome")){
+            //브라우저 확인 파일명 encode
+            downloadName = URLEncoder.encode(downloadName, "UTF-8").replaceAll("\\+", "%20");
+        }else{
+            downloadName = new String(downloadName.getBytes("UTF-8"), "ISO-8859-1");
+        }
+
+        try(FileInputStream fis = new FileInputStream(initFile);
+            ServletOutputStream sos = response.getOutputStream();	){
+
+            byte[] b = new byte[1024];
+            int data = 0;
+
+            while((data=(fis.read(b, 0, b.length))) != -1){
+                sos.write(b, 0, data);
+            }
+
+            sos.flush();
+        }
 
     }
 

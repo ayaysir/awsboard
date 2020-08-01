@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(HttpMethod.GET, "/upload").permitAll()
                 .antMatchers("/api/v1/midi/**").permitAll()
+                .antMatchers("/api/v1/midi/mp3/**").permitAll()
                 .anyRequest().authenticated()
 
             .and()
