@@ -179,7 +179,7 @@ public class MidiApiController {
     @GetMapping("/midi/upload")
     public ModelAndView upt() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/midi/upload");
+        modelAndView.setViewName("midi/upload");
         return modelAndView;
     }
 
