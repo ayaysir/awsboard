@@ -127,7 +127,11 @@
         }
 
         $("#field-file").on("change", e => {
-            resetAll()
+            if($("#field-file").get(0).length >= 1) {
+                resetAll()
+            } else {
+                $("#table-info-tbody tr:not(#info-tr-proto)").remove()
+            }
             const evTarget = e.target
             console.log(evTarget.files)
             Array.from(evTarget.files).forEach(file => {
