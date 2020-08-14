@@ -11,4 +11,8 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
     @Query("select p from Posts p order by p.id desc")
     List<Posts> findAllDesc();
 
+    // findByXXX: XXX 컬럼을 키워드로 검색
+    // Containing: 특정 키워드 포함 여부
+    List<Posts> findByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(String title, String content);
+
 }

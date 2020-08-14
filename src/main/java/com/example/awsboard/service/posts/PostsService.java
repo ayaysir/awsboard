@@ -52,4 +52,13 @@ public class PostsService {
         postsRepository.delete(post);
 
     }
+
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDTO> searchTitleAndContent(String keyword) {
+        return postsRepository
+                .findByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(keyword, keyword)
+                .stream()
+                .map(PostsListResponseDTO::new)
+                .collect(Collectors.toList());
+    }
 }

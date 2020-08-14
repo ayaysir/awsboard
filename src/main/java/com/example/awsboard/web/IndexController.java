@@ -5,6 +5,7 @@ import com.example.awsboard.config.auth.dto.SessionUser;
 import com.example.awsboard.service.posts.LogService;
 import com.example.awsboard.service.posts.NoticeService;
 import com.example.awsboard.service.posts.PostsService;
+import com.example.awsboard.web.dto.PostsListResponseDTO;
 import com.example.awsboard.web.dto.PostsResponseDTO;
 import com.example.awsboard.web.dto.log.LogSaveRequestDTO;
 import com.example.awsboard.web.dto.notice.NoticeResponseDTO;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -177,6 +179,36 @@ public class IndexController {
         logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("notice").userId(loginUser.getId()).build());
 
         return "posts-view";
+    }
+
+    @GetMapping("/search")
+    public String search(Model model, @LoginUser SessionUser user, String keyword) {
+
+        List<PostsListResponseDTO> posts = null;
+        if(!keyword.equals("")) {
+            posts = postsService.searchTitleAndContent(keyword);
+        } else {
+            posts = postsService.findAllDesc();
+        }
+        // 글 목록 전송
+        model.addAttribute("posts", posts);
+        model.addAttribute("boardTitle", "자유게시판");
+        model.addAttribute("requestFrom", "posts");
+
+        posts.forEach(System.out::println);
+
+        // 사용자 정보: 위의 @LoginUser 어노테이션으로 대체
+        // SessionUser user = (SessionUser) httpSession.getAttribute("user");
+
+
+        if(user != null) {
+            model.addAttribute("userName", user.getName());
+            model.addAttribute("userImg", user.getPicture());
+            model.addAttribute("userEmail", user.getEmail());
+            model.addAttribute("isAllowWrite", true);
+        }
+
+        return "index";
     }
 
 }

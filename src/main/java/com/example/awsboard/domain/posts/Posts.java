@@ -4,11 +4,13 @@ import com.example.awsboard.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@ToString
 @Entity // 테이블과 링크될 클래스
 public class Posts extends BaseTimeEntity {
 

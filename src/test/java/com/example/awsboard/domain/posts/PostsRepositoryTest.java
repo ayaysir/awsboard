@@ -65,4 +65,46 @@ public class PostsRepositoryTest {
 
 
     }
+
+    @Test
+    public void Search_동작여부() {
+
+        // Given
+        String title = "Dog water";
+        String content = "Cat water";
+
+        postsRepository.save(Posts.builder()
+                .title(title)
+                .content(content)
+                .author("kim")
+                .build());
+        postsRepository.save(Posts.builder()
+                .title(content)
+                .content(title)
+                .author("park")
+                .build());
+        postsRepository.save(Posts.builder()
+                .title("fire")
+                .content("fire")
+                .author("lee")
+                .build());
+
+        // when
+        String toFindKeyword ="Cat";
+
+        List<Posts> postsList = postsRepository
+                .findByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(toFindKeyword, toFindKeyword);
+
+        // then
+        Posts posts0 = (Posts) postsList.get(0);
+        Posts posts1 = (Posts) postsList.get(1);
+
+        System.out.println(postsList);
+
+        assertThat(posts0.getContent()).contains(toFindKeyword);
+        assertThat(posts1.getTitle()).contains(toFindKeyword);
+
+    }
+
+
 }
