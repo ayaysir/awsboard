@@ -50,7 +50,7 @@ public class TimidityRunner {
             File mp3File = new File(mp3Path);
             if(mp3File.exists() && mp3File.length() > 0) {
                 System.out.println(">> Convert succeeded.");
-//                wavFile.delete();
+                wavFile.delete();
                 return true;
             } else {
                 return false;

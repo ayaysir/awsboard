@@ -25,14 +25,20 @@ public class MidiRequestDTO {
     @Setter
     private String originalMp3Path;
 
+    @Setter
+    private String originalFileName;
+
     @Builder
-    public MidiRequestDTO(Long userId, String category, String customTitle, String hash, String originalMidiPath, String originalMp3Path) {
+    public MidiRequestDTO(Long userId, String category, String customTitle,
+                          String hash, String originalMidiPath, String originalMp3Path,
+                          String originalFileName) {
         this.userId = userId;
         this.category = category;
         this.customTitle = customTitle;
         this.hash = hash;
         this.originalMidiPath = originalMidiPath;
         this.originalMp3Path = originalMp3Path;
+        this.originalFileName = originalFileName;
     }
 
     public Midi toEnity() {
@@ -43,6 +49,7 @@ public class MidiRequestDTO {
                 .hash(hash)
                 .originalMidiPath(originalMidiPath)
                 .originalMp3Path(originalMp3Path)
+                .originalFileName(originalFileName)
                 .build();
     }
 

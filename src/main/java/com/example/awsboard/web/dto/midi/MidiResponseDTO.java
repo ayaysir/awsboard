@@ -1,7 +1,14 @@
 package com.example.awsboard.web.dto.midi;
 
 import com.example.awsboard.domain.midi.Midi;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@Getter
+@ToString
+@NoArgsConstructor
 public class MidiResponseDTO {
 
     private Long id;
@@ -18,6 +25,9 @@ public class MidiResponseDTO {
 
     private String originalMp3Path;
 
+    private String originalFileName;
+
+    @Builder
     public MidiResponseDTO(Midi entity) {
         this.id = entity.getId();
         this.userId = entity.getUserId();
@@ -26,5 +36,6 @@ public class MidiResponseDTO {
         this.hash = entity.getHash();
         this.originalMidiPath = entity.getOriginalMidiPath();
         this.originalMp3Path = entity.getOriginalMp3Path();
+        this.originalFileName = entity.getOriginalFileName();
     }
 }

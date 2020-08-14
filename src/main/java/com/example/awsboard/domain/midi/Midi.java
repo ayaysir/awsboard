@@ -31,14 +31,19 @@ public class Midi {
 
     private String originalMp3Path;
 
+    private String originalFileName;
+
     @Builder
-    public Midi(Long userId, String category, String customTitle, String hash, String originalMidiPath, String originalMp3Path) {
+    public Midi(Long userId, String category, String customTitle,
+                String hash, String originalMidiPath, String originalMp3Path,
+                String originalFileName) {
         this.userId = userId;
         this.category = category;
         this.customTitle = customTitle;
         this.hash = hash;
         this.originalMidiPath = originalMidiPath;
         this.originalMp3Path = originalMp3Path;
+        this.originalFileName = originalFileName;
     }
 
     public void update(MidiRequestDTO dto) {
