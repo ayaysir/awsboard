@@ -182,6 +182,7 @@ public class MidiApiController {
 
         response.setHeader("Content-Disposition", "attachment;filename=\"" + downloadName +"\"");
         response.setContentType("audio/mp3");
+        response.setHeader("Content-Length", initFile.length() + "");
         response.setHeader("Content-Transfer-Encoding", "binary;");
 
         try(FileInputStream fis = new FileInputStream(initFile);
