@@ -1,0 +1,107 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미디파일 업로드</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        .song-title {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-6">
+                <h2>미디파일 목록 (임시)</h2>
+                <p>제목을 클릭하면 재생됩니다. <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a></p>
+            </div>
+            <div class="col-6">
+                <div>
+                    <audio id="audio-player" controls></audio>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover" id="table-info">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">업로더</th>
+                </tr>
+            </thead>
+            <tbody id="table-info-tbody">
+                <!--    <tr id="info-tr-proto">-->
+                <!--        <th scope="row" class="file-name">Default</th>-->
+                <!--        <td class="category">-->
+                <!--            <input type="text" placeholder="카테고리명을 입력하세요." class="form-control form-control-sm">-->
+                <!--        </td>-->
+                <!--        <td class="custom-title">-->
+                <!--            <input type="text" placeholder="제목을 입력하세요." class="form-control form-control-sm">-->
+                <!--        </td>-->
+                <!--        <td class="file-size">Column content</td>-->
+                <!--    </tr>-->
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <script>
+        const example = [{
+                "id": 1,
+                "userId": 1,
+                "category": "Uploaded",
+                "customTitle": "amazonia",
+                "originalFileName": "amazonia.mid"
+            },
+            {
+                "id": 2,
+                "userId": 1,
+                "category": "Uploaded",
+                "customTitle": "ample",
+                "originalFileName": "ample.mid"
+            },
+            {
+                "id": 3,
+                "userId": 1,
+                "category": "Uploaded",
+                "customTitle": "arsenal-mixed-4bell-mid0",
+                "originalFileName": "arsenal-mixed-4bell-mid0.mid"
+            }
+        ]
+
+        fetch("/api/v1/midi", {
+                method: "GET"
+            })
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(song => {
+                    const $tr = document.createElement("tr");
+                    $tr.innerHTML = `<th scope="row">${song.id}</th>
+                    <td class="song-title" data-id=${song.id}>[${song.category}] ${song.customTitle}</td>
+                    <td>${song.userId}</td>`
+                    document.getElementById("table-info-tbody").appendChild($tr)
+
+                })
+            })
+
+
+
+        document.addEventListener("click", e => {
+            if (e.target && e.target.classList.contains("song-title")) {
+                const audio = document.getElementById("audio-player")
+                audio.src = "/api/v1/midi/mp3/" + e.target.dataset.id
+                // audio.src = "http://cld3097web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3"
+                audio.play()
+            }
+        })
+    </script>
+
+
+</body></html>

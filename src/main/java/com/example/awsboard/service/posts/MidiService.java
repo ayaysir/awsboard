@@ -2,6 +2,7 @@ package com.example.awsboard.service.posts;
 
 import com.example.awsboard.domain.midi.Midi;
 import com.example.awsboard.domain.midi.MidiRepository;
+import com.example.awsboard.web.dto.midi.MidiPublicResponseDTO;
 import com.example.awsboard.web.dto.midi.MidiRequestDTO;
 import com.example.awsboard.web.dto.midi.MidiResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +45,9 @@ public class MidiService {
     }
 
     @Transactional(readOnly = true)
-    public List<MidiResponseDTO> findAllDesc() {
+    public List<MidiPublicResponseDTO> findAll() {
         return midiRepository.findAll().stream()
-                .map(MidiResponseDTO::new)
+                .map(MidiPublicResponseDTO::new)
                 .collect(Collectors.toList());
     }
 

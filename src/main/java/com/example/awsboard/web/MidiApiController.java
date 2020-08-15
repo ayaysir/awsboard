@@ -4,6 +4,7 @@ import com.example.awsboard.config.auth.LoginUser;
 import com.example.awsboard.config.auth.dto.SessionUser;
 import com.example.awsboard.service.posts.MidiService;
 import com.example.awsboard.util.TimidityRunner;
+import com.example.awsboard.web.dto.midi.MidiPublicResponseDTO;
 import com.example.awsboard.web.dto.midi.MidiRequestDTO;
 import com.example.awsboard.web.dto.midi.MidiResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -198,10 +199,22 @@ public class MidiApiController {
 
     }
 
+    @GetMapping(DEFAULT_URI)
+    public List<MidiPublicResponseDTO> findAll() {
+        return midiService.findAll();
+    }
+
+    // ** 나중에 별도 컨트롤러로 이동 ** //
+
     @GetMapping("/midi/upload")
-    public ModelAndView upt() {
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView upload(ModelAndView modelAndView) {
         modelAndView.setViewName("midi/upload");
+        return modelAndView;
+    }
+
+    @GetMapping("/midi/list")
+    public ModelAndView midiHome(ModelAndView modelAndView) {
+        modelAndView.setViewName("midi/midi-main-test");
         return modelAndView;
     }
 

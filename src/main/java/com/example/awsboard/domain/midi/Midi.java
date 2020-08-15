@@ -1,5 +1,6 @@
 package com.example.awsboard.domain.midi;
 
+import com.example.awsboard.domain.BaseTimeEntity;
 import com.example.awsboard.web.dto.midi.MidiRequestDTO;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Midi {
+public class Midi extends BaseTimeEntity {
 
     @Id // PK 필드
     @GeneratedValue(strategy = GenerationType.IDENTITY) // PK 생성규칙

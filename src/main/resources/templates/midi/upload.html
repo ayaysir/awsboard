@@ -102,6 +102,7 @@
                         <p class="upload-result">성공/실패</p>
                         <p>성공: <span class="success-count">0</span></p>
                         <p>실패: <span class="failed-count">0</span></p>
+                        <p><a th:href="@{/midi/list}">미디파일 목록 가기</a></p>
                     </div>
                     <div class="modal-footer">
                         <!--                        <button type="button" class="btn btn-primary">Save changes</button>-->
@@ -143,7 +144,7 @@
 
                     const fileNameWithoutExt = file.name.substring(0, file.name.lastIndexOf("."))
                     clone.find(".custom-title input").val(fileNameWithoutExt)
-                    clone.find(".file-size").text(parseInt(file.size / 1000) + " KB")
+                    clone.find(".file-size").text(Math.ceil(file.size / 1000) + " KB")
                     clone.show()
                     clone.attr("id", "")
 
