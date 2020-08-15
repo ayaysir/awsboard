@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>미디파일 업로드</title>
+    <title>미디 플레이어 (임시)</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <style>
         .song-title {
@@ -88,7 +88,7 @@
                 data.forEach(song => {
                     const $tr = document.createElement("tr");
                     $tr.innerHTML = `<th scope="row">${song.id}</th>
-                    <td class="song-title text-muted" data-id=${song.id}>[${song.category}] ${song.customTitle}</td>
+                    <td class="song-title" data-id=${song.id}><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
                     <td>${song.userId}</td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
 
