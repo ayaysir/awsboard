@@ -9,6 +9,10 @@
         .song-title {
             cursor: pointer;
         }
+
+        #audio-player {
+            width: 100%;
+        }
     </style>
 
 </head>
@@ -17,11 +21,11 @@
 
     <div class="container">
         <div class="row mt-3">
-            <div class="col-6">
+            <div class="col-7">
                 <h2>미디파일 목록 (임시)</h2>
                 <p>제목을 클릭하면 재생됩니다. <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a></p>
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <div>
                     <audio id="audio-player" controls></audio>
                 </div>
@@ -84,7 +88,7 @@
                 data.forEach(song => {
                     const $tr = document.createElement("tr");
                     $tr.innerHTML = `<th scope="row">${song.id}</th>
-                    <td class="song-title" data-id=${song.id}>[${song.category}] ${song.customTitle}</td>
+                    <td class="song-title text-muted" data-id=${song.id}>[${song.category}] ${song.customTitle}</td>
                     <td>${song.userId}</td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
 
@@ -96,6 +100,7 @@
         document.addEventListener("click", e => {
             if (e.target && e.target.classList.contains("song-title")) {
                 const audio = document.getElementById("audio-player")
+                audio.pause()
                 audio.src = "/api/v1/midi/mp3/" + e.target.dataset.id
                 // audio.src = "http://cld3097web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3"
                 audio.play()
