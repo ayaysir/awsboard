@@ -180,8 +180,9 @@ public class MidiApiController {
             downloadName = new String(downloadName.getBytes("UTF-8"), "ISO-8859-1");
         }
 
-        response.setHeader("Content-Disposition", "attachment;filename=\"" + downloadName +"\"");
-        response.setContentType("audio/mp3");
+        response.setHeader("Content-Disposition", "filename=\"" + downloadName +"\"");
+        response.setContentType("audio/mpeg");
+        response.setHeader("Accept-ranges", "bytes");
         response.setHeader("Content-Length", initFile.length() + "");
         response.setHeader("Content-Transfer-Encoding", "binary;");
 

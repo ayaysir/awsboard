@@ -10,8 +10,20 @@
             cursor: pointer;
         }
 
-        #audio-player {
-            width: 100%;
+        @media (min-width: 1025px)  {
+
+            #audio.player {
+                width: 100%
+            }
+
+        }
+
+        @media (min-width: 320px) and (max-width: 480px) {
+
+            #audio.player {
+
+            }
+
         }
     </style>
 
@@ -27,7 +39,7 @@
             </div>
             <div class="col-5">
                 <div>
-                    <audio id="audio-player" controls></audio>
+                    <audio id="audio-player" controls preload="auto"></audio>
                 </div>
             </div>
         </div>
@@ -102,11 +114,9 @@
                 const audio = document.getElementById("audio-player")
                 audio.pause()
                 audio.loop = false
-                audio.preload
+                audio.load()
                 audio.src = "/api/v1/midi/mp3/" + e.target.dataset.id
-                audio.addEventListener("canplaythrough", e => {
-                    audio.play()
-                })
+                audio.play()
                 // audio.src = "http://cld3097web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3"
             }
         })
