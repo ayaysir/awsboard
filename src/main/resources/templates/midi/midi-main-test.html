@@ -101,6 +101,7 @@
             if (e.target && e.target.classList.contains("song-title")) {
                 const audio = document.getElementById("audio-player")
                 audio.pause()
+                audio.loop = false
                 audio.src = "/api/v1/midi/mp3/" + e.target.dataset.id
                 // audio.src = "http://cld3097web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3"
                 audio.play()
