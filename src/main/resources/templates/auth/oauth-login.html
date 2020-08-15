@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>로그인 (Please sign in)</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+</head>
+<body>
+<div class="container">
+    <h2 class="form-signin-heading">로그인이 필요한 페이지입니다.</h2>
+    <p>(Login with OAuth 2.0)</p>
+    <p>외부 로그인 계정을 선택해주세요.</p>
+    <table class="table table-striped" th:each="url : ${urls}">
+        <tr>
+            <td><a href="#" th:href="${url.value}" th:text="${url.key}">Naver</a></td>
+        </tr>
+        <tr th:if="${false}">
+            <td><a href="/oauth2/authorization/naver">Naver</a></td>
+        </tr>
+        <tr th:if="${false}">
+            <td><a href="/oauth2/authorization/google">Google</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

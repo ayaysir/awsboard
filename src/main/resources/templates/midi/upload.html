@@ -162,6 +162,12 @@
 
         $("#btn-upload").on("click", e => {
             const files = $("#field-file").get(0).files
+
+            if(files.length == 0) {
+                alert("업로드할 파일을 선택하세요.")
+                return false
+            }
+
             const categories = $("#table-info-tbody tr:not(#info-tr-proto) .category input").map((i, el) => $(el).val())
             const titles = $("#table-info-tbody tr:not(#info-tr-proto) .custom-title input").map((i, el) => $(el).val())
             console.log(categories, titles)
@@ -184,6 +190,11 @@
                 .then(res => res.json())
                 .then(data => {
                     console.log(data)
+
+                    if(data.status == "NotAllowManyFile") {
+                        alert("일반 회원은 최대 5개의 파일만 업로드할 수 우 있습니다.")
+                        return
+                    }
                 
                     $(".modal").find(".upload-result").text(data.status)
                     $(".modal").find(".success-count").text(data.successList.length)

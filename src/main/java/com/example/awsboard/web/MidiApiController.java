@@ -33,14 +33,23 @@ public class MidiApiController {
     public Map<String, Object> uploadMultipleMidi(@RequestParam("files") List<MultipartFile> files,
                                            @RequestParam("categories") List<String> categories,
                                            @RequestParam("titles") List<String> titles,
-                                           @LoginUser SessionUser user) throws Exception {
+                                           @LoginUser SessionUser user, HttpServletRequest request) throws Exception {
         String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
         String basePath = rootPath + "/" + "app/midi";
+        String ourUrl = request.getRequestURL().toString().replace(request.getRequestURI(),"");
 
         Map<String, Object> result = new HashMap<>();
 
         if(files.size() == 0) {
-            result.put("status", "Empty files");
+            result.put("status", "NoFile");
+            result.put("successList", null);
+            result.put("failedList", null);
+
+            return result;
+        }
+
+        if(!user.getRole().equalsIgnoreCase("ADMIN") && files.size() > 5) {
+            result.put("status", "NotAllowManyFile");
             result.put("successList", null);
             result.put("failedList", null);
 
@@ -52,6 +61,8 @@ public class MidiApiController {
 
         File originalDir = new File(basePath + "/original");
         File mp3Dir = new File(basePath + "/mp3");
+
+        // 디렉토리가 없으면 만든다.
         if(!originalDir.exists()) {
             originalDir.mkdirs();
             System.out.println("mkdirs: original");
@@ -65,6 +76,7 @@ public class MidiApiController {
         List<String> urlList = new ArrayList<>();
         List<String> failedList = new ArrayList<>();
         MultipartFile file = null;
+
         for(int i = 0; i < files.size(); i++) {
 
             file = files.get(i);
@@ -79,7 +91,15 @@ public class MidiApiController {
             file.transferTo(dest);
 
             // 변환
-            Boolean isConverted = TimidityRunner.convertMidiToMp3(filePath, mp3Path);
+            Boolean isConverted = false;
+            try {
+                isConverted = TimidityRunner.convertMidiToMp3(filePath, mp3Path);
+            } catch(IOException e) {
+                System.err.println(e);
+                isConverted = false;
+            }
+
+            // 변환 성공시 데이터베이스에 정보 입력
             if(isConverted) {
                 Long id = midiService.save(MidiRequestDTO.builder()
                         .category(categories.get(i))
@@ -92,20 +112,22 @@ public class MidiApiController {
                         .build());
                 Map<String, String> urlPair = new HashMap<>();
                 urlPair.put("originalName", originalName);
-                urlPair.put("url", "http://localhost:8080/api/v1/midi/mp3/" + id);
+                urlPair.put("url", ourUrl + "/api/v1/midi/mp3/" + id);
                 successList.add(urlPair);
 
 
             } else {
                 failedList.add(originalName);
             }
-
-
-
         }
 
-
-        result.put("status", successList.size() == 0 ? "All failed." : "Converted some files.");
+        if(successList.size() > 0 && failedList.size() == 0) {
+            result.put("status", "AllFileSuccess");
+        } else if(successList.size() > 0 && failedList.size() > 0) {
+            result.put("status", "SomeFileSuccess");
+        } else if (successList.size() > 0){
+            result.put("status", "AllFileFailed");
+        }
         result.put("successList", successList);
         result.put("failedList", failedList);
         System.out.println(">>>>>> Auth user >>>>> " + user);
