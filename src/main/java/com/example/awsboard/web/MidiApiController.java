@@ -200,11 +200,13 @@ public class MidiApiController {
         response.setHeader("Accept-Ranges", "bytes"); // 크롬 구간문제 해결용
         response.setHeader("Content-Transfer-Encoding", "binary;");
 
+
         // 부분 범위 리퀘스트인지, 전체 범위 리퀘스트인지에 따라 Content-Range 값을 다르게
         if(isPartialRequest) {
             response.setHeader("Content-Range", "bytes " + startRange + "-"
                     + endRange + "/" + initFile.length());
         } else {
+            response.setHeader("Content-Length", initFile.length() + "");
             response.setHeader("Content-Range", "bytes 0-"
                     + initFile.length() + "/" + initFile.length());
             startRange = 0l;
@@ -249,7 +251,6 @@ public class MidiApiController {
 
             }
 
-            response.setHeader("Content-Length", initFile.length() + "");
             sos.flush();
         }
 
