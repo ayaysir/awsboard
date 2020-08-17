@@ -39,6 +39,25 @@
             margin: 0px auto;
         }
 
+        .bg-img {
+            background: url('./btn_sprites_1.png') no-repeat 0 top ;
+            display: inline-block;
+            width: 420px;
+            height: 210px;
+        }
+
+        .bg-img.delete {
+            width: 200px; height: 200px;
+            background-position: -5px -5px;
+            zoom: 0.1;
+        }
+
+        .bg-img.edit {
+            width: 200px; height: 200px;
+            background-position: -215px -5px;
+            zoom: 0.1;
+        }
+
 
         @media (min-width: 1025px) {
 
@@ -62,9 +81,9 @@
 </head>
 
 <body>
-
-
     <div class="container">
+
+        <i class="bg-img delete"></i>
         <div class="row mt-3">
             <div class="col-12">
                 <h2>미디파일 목록 (임시)</h2>
@@ -138,6 +157,10 @@
                 "originalFileName": "arsenal-mixed-4bell-mid0.mid"
             }
         ]
+        
+        const currentPlay = {
+            trEl: null
+        }
 
         fetch("/api/v1/midi", {
                 method: "GET"
@@ -145,29 +168,46 @@
             .then(res => res.json())
             .then(data => {
                 data.forEach(song => {
-                    const $tr = document.createElement("tr");
+                    const $tr = document.createElement("tr")
                     $tr.setAttribute("title", song.originalFileName)
+                    $tr.setAttribute("data-id", song.id)
                     $tr.innerHTML = `<th scope="row">${song.id}</th>
-                    <td class="song-title" data-id=${song.id}><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
+                    <td class="song-title"><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
                     <td>${song.userId}</td>
                     <td>${song.createdDate}</td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
 
                 })
             })
+        
+        function loadAudio(audioCtx, id) {
+            
+            audioCtx.loop = false
+            audioCtx.src = "/api/v1/midi/mp3/" + id
+            audioCtx.load()
+            audioCtx.play()
+            
+        }
 
 
         document.addEventListener("click", e => {
             if (e.target && e.target.classList.contains("song-title")) {
                 const audio = document.getElementById("audio-player")
-                audio.pause()
-                audio.loop = false
-                audio.load()
-                audio.src = "/api/v1/midi/mp3/" + e.target.dataset.id
-                audio.play()
+                const parentEl = e.target.parentElement
+                loadAudio(audio, parentEl.dataset.id)
+                currentPlay.trEl = parentEl
                 // audio.src = "http://cld3097web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3"
             }
         })
+        
+        document.getElementById("audio-player").addEventListener("ended", e => {
+            const audio = e.target
+            const nextEl = currentPlay.trEl.nextSibling || document.querySelector("#table-info tbody tr")
+            loadAudio(audio, nextEl.dataset.id)
+            
+            
+        })
+        
 
         document.querySelector("#table-info .head-title").addEventListener("click", e => {
             const $trArr = document.querySelectorAll("#table-info tbody tr")
