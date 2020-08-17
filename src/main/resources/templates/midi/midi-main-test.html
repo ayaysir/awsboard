@@ -12,6 +12,8 @@
 
         #table-info {
             margin-bottom: 120px;
+            table-layout: fixed;
+            word-wrap: break-word;
         }
 
         #play-window {
@@ -40,7 +42,7 @@
         }
 
         .bg-img {
-            background: url('./btn_sprites_1.png') no-repeat 0 top ;
+            background: url('/img/btn_sprites_1.png') no-repeat 0 top ;
             display: inline-block;
             width: 420px;
             height: 210px;
@@ -83,7 +85,6 @@
 <body>
     <div class="container">
 
-        <i class="bg-img delete"></i>
         <div class="row mt-3">
             <div class="col-12">
                 <h2>미디파일 목록 (임시)</h2>
@@ -93,28 +94,28 @@
         <table class="table table-hover" id="table-info">
             <thead>
                 <tr class="head-title">
-                    <th scope="col">ID</th>
-                    <th scope="col">제목</th>
-                    <th scope="col">업로더</th>
-                    <th scope="col">생성일</th>
+                    <th scope="col" style="width: 12%">ID</th>
+                    <th scope="col" >제목</th>
+                    <th scope="col" style="width: 20%">업로더</th>
+                    <th scope="col" style="width: 20%">생성일</th>
                 </tr>
             </thead>
             <tbody id="table-info-tbody">
                 <tr th:if="${false}">
                     <th scope="col">1</th>
-                    <th scope="col" >목</th>
+                    <th scope="col"><span class="th-title">목dfdfdsfadfdsf avewrtw etewtew twt  ret aewt wt weewvcewrvaewrvvewrervwevrwervewraewrvewrewvrewrervewrewvewr</span></th>
                     <th scope="col">업로더</th>
                     <th scope="col">생성일</th>
                 </tr><tr th:if="${false}">
                     <th scope="col">2</th>
                     <th scope="col">제목</th>
-                    <th scope="col">업로더</th>
+                    <th scope="col">업로더dddefefefefefefefefefefefefefefefefefefefefefefefefefefefef</th>
                     <th scope="col">생일</th>
                 </tr><tr th:if="${false}">
                     <th scope="col">3</th>
                     <th scope="col" class=".head-title">제목</th>
                     <th scope="col">로더</th>
-                    <th scope="col">생성일</th>
+                    <th scope="col">2020-08-17</th>
                 </tr>
             </tbody>
         </table>
@@ -134,91 +135,9 @@
 
     </div>
 
+    <script src="/js/app/midi.js"> </script>
     <script>
-        const example = [{
-                "id": 1,
-                "userId": 1,
-                "category": "Uploaded",
-                "customTitle": "amazonia",
-                "originalFileName": "amazonia.mid"
-            },
-            {
-                "id": 2,
-                "userId": 1,
-                "category": "Uploaded",
-                "customTitle": "ample",
-                "originalFileName": "ample.mid"
-            },
-            {
-                "id": 3,
-                "userId": 1,
-                "category": "Uploaded",
-                "customTitle": "arsenal-mixed-4bell-mid0",
-                "originalFileName": "arsenal-mixed-4bell-mid0.mid"
-            }
-        ]
-        
-        const currentPlay = {
-            trEl: null
-        }
-
-        fetch("/api/v1/midi", {
-                method: "GET"
-            })
-            .then(res => res.json())
-            .then(data => {
-                data.forEach(song => {
-                    const $tr = document.createElement("tr")
-                    $tr.setAttribute("title", song.originalFileName)
-                    $tr.setAttribute("data-id", song.id)
-                    $tr.innerHTML = `<th scope="row">${song.id}</th>
-                    <td class="song-title"><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
-                    <td>${song.userId}</td>
-                    <td>${song.createdDate}</td>`
-                    document.getElementById("table-info-tbody").appendChild($tr)
-
-                })
-            })
-        
-        function loadAudio(audioCtx, id) {
-            
-            audioCtx.loop = false
-            audioCtx.src = "/api/v1/midi/mp3/" + id
-            audioCtx.load()
-            audioCtx.play()
-            
-        }
-
-
-        document.addEventListener("click", e => {
-            if (e.target && e.target.classList.contains("song-title")) {
-                const audio = document.getElementById("audio-player")
-                const parentEl = e.target.parentElement
-                loadAudio(audio, parentEl.dataset.id)
-                currentPlay.trEl = parentEl
-                // audio.src = "http://cld3097web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3"
-            }
-        })
-        
-        document.getElementById("audio-player").addEventListener("ended", e => {
-            const audio = e.target
-            const nextEl = currentPlay.trEl.nextSibling || document.querySelector("#table-info tbody tr")
-            loadAudio(audio, nextEl.dataset.id)
-            currentPlay.trEl = nextEl
-            
-        })
-        
-
-        document.querySelector("#table-info .head-title").addEventListener("click", e => {
-            const $trArr = document.querySelectorAll("#table-info tbody tr")
-            const $tbody = document.querySelector("#table-info tbody")
-            $tbody.innerHTML = ""
-            console.log($trArr)
-            Array.from($trArr).reverse().forEach((el, i) => {
-                $tbody.append(el)
-            })
-        })
-
+        midi.playerInit()
     </script>
 
 
