@@ -204,7 +204,7 @@
             const audio = e.target
             const nextEl = currentPlay.trEl.nextSibling || document.querySelector("#table-info tbody tr")
             loadAudio(audio, nextEl.dataset.id)
-            
+            currentPlay.trEl = nextEl
             
         })
         
