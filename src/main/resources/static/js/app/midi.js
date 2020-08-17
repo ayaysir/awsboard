@@ -165,12 +165,11 @@ const midi = {
             .then(data => {
                 data.forEach(song => {
                     const $tr = document.createElement("tr")
-                    $tr.setAttribute("title", song.originalFileName)
+                    $tr.setAttribute("title", song.originalFileName + ` | 업로드 일자: [${song.createdDate}]`)
                     $tr.setAttribute("data-id", song.id)
                     $tr.innerHTML = `<th scope="row">${song.id}</th>
                     <td class="song-title"><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
-                    <td>${song.userId}</td>
-                    <td>${song.createdDate.split('T')[0]}</td>`
+                    <td>${song.userId}</td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
 
                 })
