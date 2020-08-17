@@ -88,10 +88,10 @@ public class MidiApiController {
             file = files.get(i);
 
             String originalName = file.getOriginalFilename();
-            String filePath = basePath + "/original/" + originalName;
-            // String mp3Name = file.getOriginalFilename().substring(0, originalName.lastIndexOf("."));
-            String mp3Name = UUID.randomUUID().toString();
-            String mp3Path = basePath + "/mp3/" + mp3Name+ ".mp3";
+            String originalExt = originalName.substring(originalName.lastIndexOf(".")).toLowerCase();
+            String uuid = UUID.randomUUID().toString();
+            String filePath = basePath + "/original/" + uuid + originalExt;
+            String mp3Path = basePath + "/mp3/" + uuid + ".mp3";
 
             File dest = new File(filePath);
             file.transferTo(dest);
@@ -111,8 +111,8 @@ public class MidiApiController {
                         .category(categories.get(i))
                         .customTitle(titles.get(i))
                         .hash(TimidityRunner.getHash(filePath))
-                        .originalMidiPath("/original/" + originalName)
-                        .originalMp3Path("/mp3/" + mp3Name+ ".mp3")
+                        .originalMidiPath("/original/" + uuid + originalExt)
+                        .originalMp3Path("/mp3/" + uuid + ".mp3")
                         .originalFileName(originalName)
                         .userId(user.getId())
                         .build());
@@ -321,7 +321,11 @@ public class MidiApiController {
         String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
         String basePath = rootPath + "/" + "app/midi/mp3";
 
-        File file = new File(basePath + "/0ae62b33-d1c2-4969-820b-692ce027277c.mp3");
+        String name = "/0ae62b33-d1c2-4969-820b-692ce027277c.mp3";
+        String ext = name.substring(name.lastIndexOf("."));
+        System.out.println(ext);
+
+        File file = new File(basePath + name);
 
         try(FileInputStream fis = new FileInputStream(file);){
 

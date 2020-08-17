@@ -6,7 +6,7 @@
     <title>미디 플레이어 (임시)</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <style>
-        .song-title {
+        .song-title, .head-title {
             cursor: pointer;
         }
 
@@ -68,30 +68,35 @@
         <div class="row mt-3">
             <div class="col-12">
                 <h2>미디파일 목록 (임시)</h2>
-                <p>제목을 클릭하면 재생됩니다. <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a></p>
+                <p>제목을 클릭하면 재생됩니다. <br>목록의 헤더를 클릭하면 오름차순/내림차순 정렬이 전환됩니다. <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a></p>
             </div>
         </div>
         <table class="table table-hover" id="table-info">
             <thead>
-                <tr>
+                <tr class="head-title">
                     <th scope="col">ID</th>
-                    <th scope="col" class=".head-title">제목</th>
+                    <th scope="col">제목</th>
                     <th scope="col">업로더</th>
                     <th scope="col">생성일</th>
                 </tr>
             </thead>
             <tbody id="table-info-tbody">
-                <!--    <tr id="info-tr-proto">-->
-                <!--        <th scope="row" class="file-name">Default</th>-->
-                <!--        <td class="category">-->
-                <!--            <input type="text" placeholder="카테고리명을 입력하세요." class="form-control form-control-sm">-->
-                <!--        </td>-->
-                <!--        <td class="custom-title">-->
-                <!--            <input type="text" placeholder="제목을 입력하세요." class="form-control form-control-sm">-->
-                <!--        </td>-->
-                <!--        <td class="file-size">Column content</td>-->
-                <!--    </tr>-->
-
+                <tr th:if="${false}">
+                    <th scope="col">1</th>
+                    <th scope="col" >목</th>
+                    <th scope="col">업로더</th>
+                    <th scope="col">생성일</th>
+                </tr><tr th:if="${false}">
+                    <th scope="col">2</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">업로더</th>
+                    <th scope="col">생일</th>
+                </tr><tr th:if="${false}">
+                    <th scope="col">3</th>
+                    <th scope="col" class=".head-title">제목</th>
+                    <th scope="col">로더</th>
+                    <th scope="col">생성일</th>
+                </tr>
             </tbody>
         </table>
 
@@ -161,6 +166,16 @@
                 audio.play()
                 // audio.src = "http://cld3097web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3"
             }
+        })
+
+        document.querySelector("#table-info .head-title").addEventListener("click", e => {
+            const $trArr = document.querySelectorAll("#table-info tbody tr")
+            const $tbody = document.querySelector("#table-info tbody")
+            $tbody.innerHTML = ""
+            console.log($trArr)
+            Array.from($trArr).reverse().forEach((el, i) => {
+                $tbody.append(el)
+            })
         })
 
     </script>

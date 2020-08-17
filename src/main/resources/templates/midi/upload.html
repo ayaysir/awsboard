@@ -124,10 +124,11 @@
         const tbody = $("#table-info-tbody")
         
         // 유효 미디 파일
-        const validFiles = []
+        let validFiles = []
 
         function resetAll() {
             $("#field-file").get(0).value = ""
+            validFiles = []
             $("#table-info-tbody tr:not(#info-tr-proto)").remove()
         }
 
@@ -140,8 +141,17 @@
             const evTarget = e.target
             console.log("before", evTarget.files)
 
+            const errMsgs = []
+
             Array.from(evTarget.files).forEach(file => {
-                if (file.type === "audio/midi") {
+                
+                const originalFileExt = file.name.substr(file.name.lastIndexOf(".") + 1).toLocaleLowerCase()
+                
+                if (file.type === "audio/midi" || originalFileExt === "mid" || originalFileExt === "rmi") {
+                    
+                    if(file.type !== "audio/midi") {
+                        errMsgs.push(file.name + "\n  - 파일 정보가 부족하므로 변환이 되지 않을 수 있습니다.")
+                    }
 
                     validFiles.push(file)
 
@@ -159,9 +169,13 @@
 
                     tbody.append(clone)
                 } else {
-                    console.log(file.name, "미디 파일만 업로드할 수 있습니다.")
+                    errMsgs.push(file.name + "\n  - 미디 파일이 아니거나 파일이 손상되었습니다.")
                 }
             })
+
+            if(errMsgs.length > 0) {
+                alert(errMsgs.join("\n"))
+            }
             
             console.log("after", validFiles)
         })
