@@ -146,6 +146,7 @@
             .then(data => {
                 data.forEach(song => {
                     const $tr = document.createElement("tr");
+                    $tr.setAttribute("title", song.originalFileName)
                     $tr.innerHTML = `<th scope="row">${song.id}</th>
                     <td class="song-title" data-id=${song.id}><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
                     <td>${song.userId}</td>
