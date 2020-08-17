@@ -10,6 +10,9 @@
             cursor: pointer;
         }
 
+        #table-info {
+            margin-bottom: 120px;
+        }
 
         #play-window {
             position: fixed;
@@ -60,7 +63,7 @@
 
 <body>
 
-    
+
     <div class="container">
         <div class="row mt-3">
             <div class="col-12">
@@ -72,8 +75,9 @@
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">제목</th>
+                    <th scope="col" class=".head-title">제목</th>
                     <th scope="col">업로더</th>
+                    <th scope="col">생성일</th>
                 </tr>
             </thead>
             <tbody id="table-info-tbody">
@@ -94,7 +98,7 @@
         <div id="play-window" class="card border-info mb-1">
             <div class="card-body">
                 <h5 class="card-title" id="title">Now playing...</h5>
-<!--                <p class="card-text"> <span id="MIDIjs.audio_time">00:00</span> / <span id="total_time">00:00</span></p>-->
+                <!--                <p class="card-text"> <span id="MIDIjs.audio_time">00:00</span> / <span id="total_time">00:00</span></p>-->
                 <p class="card-text" id="play-info"> <span id="MIDIjs.message" style="color: green"></span></p>
             </div>
 
@@ -139,12 +143,12 @@
                     const $tr = document.createElement("tr");
                     $tr.innerHTML = `<th scope="row">${song.id}</th>
                     <td class="song-title" data-id=${song.id}><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
-                    <td>${song.userId}</td>`
+                    <td>${song.userId}</td>
+                    <td>${song.createdDate}</td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
 
                 })
             })
-
 
 
         document.addEventListener("click", e => {

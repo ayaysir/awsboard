@@ -58,7 +58,7 @@
 
 
         <div class="form-group">
-            <button class="btn btn-info" th:href="@{/midi/list}">미디 플레이어</button>
+            <a class="btn btn-info active" href="#" th:href="@{/midi/list}">미디 플레이어</a>
             <button class="btn btn-secondary" id="btn-reset">초기화</button>
             <button class="btn btn-primary" id="btn-upload">
                 <span class="spinner spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -123,21 +123,28 @@
 
         const tbody = $("#table-info-tbody")
         
+        // 유효 미디 파일
+        const validFiles = []
+
         function resetAll() {
             $("#field-file").get(0).value = ""
             $("#table-info-tbody tr:not(#info-tr-proto)").remove()
         }
 
         $("#field-file").on("change", e => {
-            if($("#field-file").get(0).length >= 1) {
+            if ($("#field-file").get(0).length >= 1) {
                 resetAll()
             } else {
                 $("#table-info-tbody tr:not(#info-tr-proto)").remove()
             }
             const evTarget = e.target
-            console.log(evTarget.files)
+            console.log("before", evTarget.files)
+
             Array.from(evTarget.files).forEach(file => {
                 if (file.type === "audio/midi") {
+
+                    validFiles.push(file)
+
                     const clone = $("#info-tr-proto").clone()
 
                     clone.find(".file-name").text(file.name)
@@ -155,6 +162,8 @@
                     console.log(file.name, "미디 파일만 업로드할 수 있습니다.")
                 }
             })
+            
+            console.log("after", validFiles)
         })
 
         $("#btn-change-category").on("click", e => {
@@ -163,9 +172,9 @@
         })
 
         $("#btn-upload").on("click", e => {
-            const files = $("#field-file").get(0).files
+            const files = validFiles
 
-            if(files.length == 0) {
+            if (files.length == 0) {
                 alert("업로드할 파일을 선택하세요.")
                 return false
             }
@@ -175,7 +184,8 @@
             console.log(categories, titles)
 
             const formData = new FormData()
-            Array.from(files).forEach((file, i) => {
+            
+            files.forEach((file, i) => {
                 formData.append("files", file)
                 formData.append("categories", categories[i])
                 formData.append("titles", titles[i])
@@ -193,34 +203,34 @@
                 .then(data => {
                     console.log(data)
 
-                    if(data.status == "NotAllowManyFile") {
+                    if (data.status == "NotAllowManyFile") {
                         alert("일반 회원은 최대 5개의 파일만 업로드할 수 우 있습니다.")
                         return
                     }
-                
+
                     $(".modal").find(".upload-result").text(data.status)
                     $(".modal").find(".success-count").text(data.successList.length)
                     $(".modal").find(".failed-count").text(data.failedList.length)
                     $(".modal").modal("show")
-                
+
                     resetAll()
 
                 })
                 .catch(err => {
                     console.error(err)
-                
+
                     $(".modal").find(".upload-result").text("파일 전송에 실패했습니다.")
                     $(".modal").modal("show")
-                
+
                     resetAll()
                 })
                 .finally(() => {
                     $("#btn-upload .spinner").hide()
                     $("#btn-upload .message").text("모든 파일 업로드")
-                
+
                 })
         })
-        
+
         $("#btn-reset").on("click", e => {
             resetAll()
         })

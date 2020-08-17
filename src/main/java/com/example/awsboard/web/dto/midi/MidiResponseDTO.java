@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Getter
 @ToString
 @NoArgsConstructor
@@ -27,7 +29,10 @@ public class MidiResponseDTO {
 
     private String originalFileName;
 
-    @Builder
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
     public MidiResponseDTO(Midi entity) {
         this.id = entity.getId();
         this.userId = entity.getUserId();
@@ -37,5 +42,7 @@ public class MidiResponseDTO {
         this.originalMidiPath = entity.getOriginalMidiPath();
         this.originalMp3Path = entity.getOriginalMp3Path();
         this.originalFileName = entity.getOriginalFileName();
+        this.createdDate = entity.getCreatedDate();
+        this.modifiedDate = entity.getModifiedDate();
     }
 }

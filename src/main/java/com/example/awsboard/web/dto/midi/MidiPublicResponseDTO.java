@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.tomcat.jni.Local;
+
+import java.time.LocalDateTime;
 
 @Getter
 @ToString
@@ -21,12 +24,17 @@ public class MidiPublicResponseDTO {
 
     private String originalFileName;
 
-    @Builder
-    public MidiPublicResponseDTO(Midi entity) {
-        this.id = entity.getId();
-        this.userId = entity.getUserId();
-        this.category = entity.getCategory();
-        this.customTitle = entity.getCustomTitle();
-        this.originalFileName = entity.getOriginalFileName();
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
+    public MidiPublicResponseDTO(Midi midi) {
+        this.id = midi.getId();
+        this.userId = midi.getUserId();
+        this.category = midi.getCategory();
+        this.customTitle = midi.getCustomTitle();
+        this.originalFileName = midi.getOriginalFileName();
+        this.createdDate = midi.getCreatedDate();
+        this.modifiedDate = midi.getModifiedDate();
     }
 }
