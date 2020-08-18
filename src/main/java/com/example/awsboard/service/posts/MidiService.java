@@ -51,5 +51,12 @@ public class MidiService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<MidiPublicResponseDTO> findByUserId(Long userId) {
+        return midiRepository.findByUserId(userId).stream()
+                .map(MidiPublicResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
 
 }

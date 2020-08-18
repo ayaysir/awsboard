@@ -154,10 +154,12 @@ const midi = {
             }
         ]
 
+        // 현재 재생중인 곡 정보를 담는 객체
         const currentPlay = {
             trEl: null
         }
 
+        // ajax로 곡 목록을 가져와 새로운 $tr을 테이블에 append
         fetch("/api/v1/midi", {
                 method: "GET"
             })
@@ -175,6 +177,7 @@ const midi = {
                 })
             })
 
+        // 아이디를 정보로 받아 오디오를 재생하는 함수
         function loadAudio(audioCtx, id) {
 
             audioCtx.loop = false
@@ -184,22 +187,23 @@ const midi = {
 
         }
 
-
+        // 제목을 클릭하면 노래가 재생
         document.addEventListener("click", e => {
             if (e.target && e.target.classList.contains("song-title")) {
                 const audio = document.getElementById("audio-player")
                 const parentEl = e.target.parentElement
                 loadAudio(audio, parentEl.dataset.id)
-                currentPlay.trEl = parentEl
+                currentPlay.trEl = parentEl // 현재 재생중인 곡의 tr을 currentPlay.trEl에 저장
                 // audio.src = "http://cld3097web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3"
             }
         })
 
+        // 곡이 끝나면 (ended) tr.nextSibling으로 다음 곡을 찾아 재생
         document.getElementById("audio-player").addEventListener("ended", e => {
             const audio = e.target
             const nextEl = currentPlay.trEl.nextSibling || document.querySelector("#table-info tbody tr")
             loadAudio(audio, nextEl.dataset.id)
-            currentPlay.trEl = nextEl
+            currentPlay.trEl = nextEl // 현재 재생중인 곡의 tr을 currentPlay.trEl에 저장
 
         })
 
@@ -208,10 +212,11 @@ const midi = {
             const $trArr = document.querySelectorAll("#table-info tbody tr")
             const $tbody = document.querySelector("#table-info tbody")
             $tbody.innerHTML = ""
-            console.log($trArr)
             Array.from($trArr).reverse().forEach((el, i) => {
                 $tbody.append(el)
             })
         })
     },
+
+
 }

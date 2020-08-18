@@ -302,18 +302,63 @@ public class MidiApiController {
         return midiService.findAll();
     }
 
-    // ** 나중에 별도 컨트롤러로 이동 ** //
+    @PutMapping(DEFAULT_URI + "/{id}")
+    public Long updateMidiInfo(@RequestBody MidiRequestDTO midiRequestDTO,
+                                              @PathVariable Long id, @LoginUser SessionUser user) {
+        if(user != null) {
+            MidiResponseDTO midi = midiService.findById(id);
+            System.out.println(">>>> " + midiRequestDTO);
+            System.out.println(">>>> " + midi);
+            System.out.println(user.getRole());
+            System.out.println(user.getId());
+            System.out.println(midi.getUserId());
+            System.out.println(midi.getUserId().equals(user.getId()));
+            if(user.getRole().equalsIgnoreCase("ADMIN")
+                    || midi.getUserId().equals(user.getId())) {
+                return midiService.update(id, midiRequestDTO);
+            }
 
-    @GetMapping("/midi/upload")
-    public ModelAndView upload(ModelAndView modelAndView) {
-        modelAndView.setViewName("midi/upload");
-        return modelAndView;
+        }
+
+        return -99L;
     }
 
-    @GetMapping("/midi")
-    public ModelAndView midiHome(ModelAndView modelAndView) {
-        modelAndView.setViewName("midi/midi-main-test");
-        return modelAndView;
+    @DeleteMapping(DEFAULT_URI + "/{id}")
+    public Long deleteMidi(@PathVariable Long id,
+                           @LoginUser SessionUser user) {
+
+        if(user != null) {
+            MidiResponseDTO midi = midiService.findById(id);
+            if(user.getRole().equalsIgnoreCase("ADMIN")
+                    ||  midi.getUserId().equals(user.getId())) {
+                midiService.delete(id);
+
+                // 파일 삭제
+                // mp3 파일 경로 지정
+                String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
+                String basePath = rootPath + "/" + "app/midi";
+                String midiPath = basePath + midi.getOriginalMidiPath();
+                String mp3Path = basePath + midi.getOriginalMp3Path();
+
+                File midiFile = new File(midiPath);
+                File mp3File = new File(mp3Path);
+                File toDeleteDir = new File(basePath + "/to_delete");
+
+                if(!toDeleteDir.exists()) {
+                    toDeleteDir.mkdirs();
+                    System.out.println("mkdirs: /to_delete");
+                }
+
+                // 파일 to_delete 디렉토리로 이동
+                midiFile.renameTo(new File(basePath + "/to_delete/" + midiFile.getName()));
+                mp3File.renameTo(new File(basePath + "/to_delete/" + mp3File.getName()));
+
+                return id;
+            }
+
+        }
+
+        return -99L;
     }
 
     public static void main(String[] args) {
