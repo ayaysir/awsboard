@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>미디 플레이어</title>
+    <link rel=apple-touch-icon type=image/png href="/img/midi-icon.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <style>
         .song-title, .head-title {
@@ -11,7 +12,7 @@
         }
 
         #table-info {
-            margin-bottom: 150px;
+            margin-bottom: 165px;
             table-layout: fixed;
             word-wrap: break-word;
         }
@@ -25,8 +26,8 @@
             background-color: rgba(255, 255, 255, 0.9)
         }
 
-        #play-window .play-btn-panel {
-
+        #audio-player {
+            margin-botton: 15px;
         }
 
         #play-title {
@@ -104,7 +105,7 @@
 
 
             <div class="card-body">
-                <p class="card-title" id="play-title">Now playing...</p>
+                <p class="card-title" id="play-title">[즐겨찾기]에 등록해서 미디플레이어를 사용해보세요.</p>
             </div>
             <div class="play-btn-panel">
                 <audio id="audio-player" controls preload="auto"></audio>
