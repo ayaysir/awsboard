@@ -228,7 +228,7 @@ const midi = {
             currentPlay.trEl = nextEl // 현재 재생중인 곡의 tr을 currentPlay.trEl에 저장
             
             // 플레이어 정보 갱신
-            document.getElementById("play-title").innerHTML = parentEl.getElementsByClassName("song-title")[0].innerHTML
+            document.getElementById("play-title").innerHTML = nextEl.getElementsByClassName("song-title")[0].innerHTML
 
         })
 
