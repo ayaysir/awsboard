@@ -189,7 +189,7 @@ const midi = {
                     $tr.setAttribute("data-id", song.id)
                     $tr.innerHTML = `<th scope="row">${song.id}</th>
                     <td class="song-title"><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
-                    <td>${song.userId}</td>`
+                    <td class="text-center">${song.userId}</td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
 
                 })
