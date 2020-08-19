@@ -2,7 +2,6 @@ package com.example.awsboard.web;
 
 import com.example.awsboard.config.auth.LoginUser;
 import com.example.awsboard.config.auth.dto.SessionUser;
-import com.example.awsboard.domain.midi.MidiRepository;
 import com.example.awsboard.service.posts.MidiService;
 import com.example.awsboard.web.dto.midi.MidiPublicResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +39,7 @@ public class MidiIndexController {
         System.out.println(">>>> " + list);
 
         model.addAttribute("list", list);
-        return "midi/midi-edit.html";
+        return "midi/midi-edit";
     }
 
     @GetMapping("/midi")
@@ -48,7 +47,7 @@ public class MidiIndexController {
         if(user != null) {
             model.addAttribute("loginUser", user);
         }
-        return "midi/midi-main-test";
+        return "midi/midi-main";
     }
 
 

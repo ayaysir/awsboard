@@ -99,7 +99,8 @@ const midi = {
                     console.log(data)
 
                     if (data.status == "NotAllowManyFile") {
-                        alert("일반 회원은 최대 5개의 파일만 업로드할 수 우 있습니다.")
+                        alert("일반 회원은 최대 5개의 파일만 업로드할 수 있습니다.")
+                        resetAll()
                         return
                     }
 
@@ -107,8 +108,6 @@ const midi = {
                     $(".modal").find(".success-count").text(data.successList.length)
                     $(".modal").find(".failed-count").text(data.failedList.length)
                     $(".modal").modal("show")
-
-                    resetAll()
 
                 })
                 .catch(err => {
@@ -131,6 +130,25 @@ const midi = {
         })
     },
     playerInit() {
+        Number.prototype.toMS = function(isMillisecond) {
+            if (isMillisecond) {
+                var num = parseInt(this) / 1000
+            } else {
+                var num = parseInt(this)
+            }
+
+            // console.log(num)
+            var min = Math.floor(num / 60)
+            var sec = Math.floor(num - (min * 60))
+            if (min < 10) {
+                min = "0" + min;
+            }
+            if (sec < 10) {
+                sec = "0" + sec;
+            }
+            return min + ":" + sec
+        }
+        
         const example = [{
                 "id": 1,
                 "userId": 1,
@@ -184,6 +202,7 @@ const midi = {
             audioCtx.src = "/api/v1/midi/mp3/" + id
             audioCtx.load()
             audioCtx.play()
+            
 
         }
 
@@ -195,6 +214,10 @@ const midi = {
                 loadAudio(audio, parentEl.dataset.id)
                 currentPlay.trEl = parentEl // 현재 재생중인 곡의 tr을 currentPlay.trEl에 저장
                 // audio.src = "http://cld3097web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3"
+                
+                // 플레이어 정보 갱신
+                document.getElementById("play-title").innerHTML = parentEl.getElementsByClassName("song-title")[0].innerHTML
+                document.querySelector(".play-total-time").textContent = audio.duration
             }
         })
 
