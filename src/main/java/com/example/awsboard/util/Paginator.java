@@ -79,7 +79,12 @@ public class Paginator {
 
     private void setTotalLastPageNum() {
         // 총 게시글 수를 기준으로 한 마지막 페이지 번호 계산
-        this.totalLastPageNum = (int) (Math.ceil((double)totalPostCount / postsPerPage));
+        // totalPostCount 가 0인 경우 1페이지로 끝냄
+        if(totalPostCount == 0) {
+            this.totalLastPageNum = 1;
+        } else {
+            this.totalLastPageNum = (int) (Math.ceil((double)totalPostCount / postsPerPage));
+        }
     }
 
     private Map<String, Object> getBlock(Integer currentPageNum,
@@ -89,13 +94,15 @@ public class Paginator {
             throw new IllegalStateException("getElasticBlock: pagesPerBlock은 홀수만 가능합니다.");
         }
 
-        if(currentPageNum > totalLastPageNum) {
-            throw new IllegalStateException("currentPager가 총 페이지 개수(" + totalLastPageNum + ") 보다 큽니다.");
+        if(currentPageNum > totalLastPageNum && totalPostCount != 0) {
+            throw new IllegalStateException("currentPage가 총 페이지 개수(" + totalLastPageNum + ") 보다 큽니다.");
         }
 
         // 블럭의 첫번째, 마지막 페이지 번호 계산
         Integer blockLastPageNum = totalLastPageNum;
         Integer blockFirstPageNum = 1;
+
+        // 글이 없는 경우, 1페이지 반환.
         if(isFixed) {
 
             Integer mod = totalLastPageNum % pagesPerBlock;
@@ -107,10 +114,8 @@ public class Paginator {
                         - (pagesPerBlock - 1);
             }
 
-
-
-            assert blockLastPageNum % pagesPerBlock == 0;
-            assert (blockFirstPageNum - 1) % pagesPerBlock == 0;
+            // assert blockLastPageNum % pagesPerBlock == 0;
+            // assert (blockFirstPageNum - 1) % pagesPerBlock == 0;
         } else {
             // 블록의 한가운데 계산 (예: 5->2, 9->4)
             Integer mid = pagesPerBlock / 2;
@@ -123,11 +128,14 @@ public class Paginator {
             }
 
             blockFirstPageNum = blockLastPageNum - (pagesPerBlock - 1);
-            assert blockLastPageNum == currentPageNum + mid;
-            assert (blockFirstPageNum - 1) % pagesPerBlock == 0;
+
+            if(totalLastPageNum < pagesPerBlock) {
+                blockLastPageNum = totalLastPageNum;
+                blockFirstPageNum = 1;
+            }
+            // assert blockLastPageNum == currentPageNum + mid;
+            // assert (blockFirstPageNum - 1) % pagesPerBlock == 0;
         }
-
-
 
         // 페이지 번호 할당
         List<Integer> pageList = new ArrayList<>();
@@ -138,7 +146,7 @@ public class Paginator {
 
         Map<String, Object> result = new HashMap<>();
         result.put("isPrevExist", (int)currentPageNum > (int)pagesPerBlock);
-        result.put("isNextExist", (int)blockLastPageNum != (int)totalLastPageNum);
+        result.put("isNextExist", blockLastPageNum != 1 ? (int)blockLastPageNum != (int)totalLastPageNum : false);
         result.put("totalLastPageNum", totalLastPageNum);
         result.put("blockLastPageNum", blockLastPageNum);
         result.put("blockFirstPageNum", blockFirstPageNum);
@@ -166,13 +174,17 @@ public class Paginator {
         final int POST_PER_PAGE = 10;
 
         // 총 게시글 수
-        long totalPostCount = 55;
+        long totalPostCount = 446;
 
         // 인스턴스 생성
         Paginator paginator = new Paginator(PAGES_PER_BLOCK, POST_PER_PAGE, totalPostCount);
 
-        for(int i = 1; i <= paginator.getTotalLastPageNum(); i++) {
-            System.out.println(paginator.getFixedBlock(i));
+        try {
+            for(int i = 1; i <= paginator.getTotalLastPageNum(); i++) {
+                System.out.println(paginator.getElasticBlock(i));
+            }
+        } catch (Exception e) {
+            System.err.println(e);
         }
 
     }
