@@ -48,9 +48,8 @@
 
         </div>
 
-        <div class="row">
+        <div class="row" th:if="${pageInfo ne null}">
             <div class="col-12">
-
                 <ul class="pagination pagination justify-content-center">
                     <li class="page-item" th:classappend="${!pageInfo.isPrevExist} ? disabled">
                         <a class="page-link" href="#" th:href="${pageInfo.isPrevExist ? '/?page=' + (pageInfo.pageList[0] - 1) : ''}">&laquo;</a>

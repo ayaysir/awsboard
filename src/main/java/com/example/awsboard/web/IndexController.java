@@ -41,10 +41,16 @@ public class IndexController {
         model.addAttribute("requestFrom", "posts");
 
         // 페이지네이션
-        Paginator paginator = new Paginator(PAGES_PER_BLOCK, POSTS_PER_PAGE, postsService.count());
-        Map<String, Object> pageInfo = paginator.getFixedBlock(page);
+        try {
+            Paginator paginator = new Paginator(PAGES_PER_BLOCK, POSTS_PER_PAGE, postsService.count());
+            Map<String, Object> pageInfo = paginator.getFixedBlock(page);
 
-        model.addAttribute("pageInfo", pageInfo);
+            model.addAttribute("pageInfo", pageInfo);
+        } catch(IllegalStateException e) {
+            model.addAttribute("pageInfo", null);
+            System.err.println(e);
+        }
+
         model.addAttribute("posts", postsService.findAllByOrderByIdDesc(page, POSTS_PER_PAGE));
 
         // 사용자 정보: 위의 @LoginUser 어노테이션으로 대체
