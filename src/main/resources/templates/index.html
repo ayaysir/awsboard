@@ -44,6 +44,28 @@
             </div>
         </div>
 
+        <div th:text="${pageList}">
+
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+
+                <ul class="pagination pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!pageInfo.isPrevExist} ? disabled">
+                        <a class="page-link" href="#" th:href="${pageInfo.isPrevExist ? '/?page=' + (pageInfo.pageList[0] - 1) : ''}">&laquo;</a>
+                    </li>
+                    <li th:each="num: ${pageInfo.pageList}" class="page-item" th:classappend="${pageInfo.currentPageNum eq num} ? active">
+                        <a class="page-link" href="#" th:href="${'/?page=' + num}" th:text="${num}"></a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${!pageInfo.isNextExist} ? disabled">
+                        <a class="page-link" href="#" th:href="${pageInfo.isNextExist ? '/?page=' + (pageInfo.pageList[0] + 5) : ''}">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-10">
                 <div th:if="${not #strings.isEmpty(userName)}">

@@ -7,10 +7,16 @@ import com.example.awsboard.web.dto.PostsResponseDTO;
 import com.example.awsboard.web.dto.PostsSaveRequestDTO;
 import com.example.awsboard.web.dto.PostsUpdateRequestDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -43,6 +49,23 @@ public class PostsService {
     @Transactional(readOnly = true)
     public List<PostsListResponseDTO> findAllDesc() {
         return postsRepository.findAllDesc().stream().map(PostsListResponseDTO::new).collect(Collectors.toList());
+    }
+
+    // 페이지로 가져오기
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDTO> findAllByOrderByIdDesc(Integer pageNum, Integer postsPerPage) {
+        Page<Posts> page = postsRepository.findAll(
+                // PageRequest의 page는 0부터 시작
+                PageRequest.of(pageNum - 1, postsPerPage,
+                        Sort.by(Sort.Direction.DESC, "id")
+        ));
+        return page.stream()
+                .map(PostsListResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    public Long count() {
+        return postsRepository.count();
     }
 
     @Transactional

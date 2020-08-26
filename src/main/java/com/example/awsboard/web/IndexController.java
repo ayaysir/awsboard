@@ -5,6 +5,7 @@ import com.example.awsboard.config.auth.dto.SessionUser;
 import com.example.awsboard.service.posts.LogService;
 import com.example.awsboard.service.posts.NoticeService;
 import com.example.awsboard.service.posts.PostsService;
+import com.example.awsboard.util.Paginator;
 import com.example.awsboard.web.dto.PostsListResponseDTO;
 import com.example.awsboard.web.dto.PostsResponseDTO;
 import com.example.awsboard.web.dto.log.LogSaveRequestDTO;
@@ -14,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -25,12 +28,24 @@ public class IndexController {
     private final NoticeService noticeService;
     private final LogService logService;
 
+    private static final Integer POSTS_PER_PAGE = 10;
+    private static final Integer PAGES_PER_BLOCK = 5;
+
     @GetMapping("/")
-    public String index(Model model, @LoginUser SessionUser user) {
+    public String index(Model model, @LoginUser SessionUser user,
+                        @RequestParam(value = "page", defaultValue = "1") Integer page) {
+
+
         // 글 목록 전송
-        model.addAttribute("posts", postsService.findAllDesc());
         model.addAttribute("boardTitle", "자유게시판");
         model.addAttribute("requestFrom", "posts");
+
+        // 페이지네이션
+        Paginator paginator = new Paginator(PAGES_PER_BLOCK, POSTS_PER_PAGE, postsService.count());
+        Map<String, Object> pageInfo = paginator.getFixedBlock(page);
+
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("posts", postsService.findAllByOrderByIdDesc(page, POSTS_PER_PAGE));
 
         // 사용자 정보: 위의 @LoginUser 어노테이션으로 대체
         // SessionUser user = (SessionUser) httpSession.getAttribute("user");
