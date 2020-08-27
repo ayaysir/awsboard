@@ -272,16 +272,27 @@ const midi = {
 
         // 검색창 숨김
         document.getElementById("btn-toggle-search").addEventListener("click", e => {
+            toggleSearch(localStorage.getItem("midi_search_status") != "open")
+        });
+
+        (() => {
+            toggleSearch(localStorage.getItem("midi_search_status") == "open")
+        })();
+
+        function toggleSearch(isToShow) {
             const $divSearch = document.getElementById("div-search")
-            const currentState = $divSearch.style.display
-            if(currentState == 'none') {
+            const $button = document.getElementById("btn-toggle-search")
+
+            if(isToShow) {
                 $divSearch.style.display = 'flex'
-                e.target.textContent = e.target.dataset.hideMsg
+                $button.textContent = $button.dataset.hideMsg
+                localStorage.setItem("midi_search_status", "open")
             } else {
                $divSearch.style.display = 'none'
-               e.target.textContent = e.target.dataset.showMsg
+               $button.textContent = $button.dataset.showMsg
+               localStorage.setItem("midi_search_status", "close")
             }
-        })
+        }
 
     },
 

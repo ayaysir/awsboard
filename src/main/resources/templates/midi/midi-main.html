@@ -57,7 +57,7 @@
         }
 
         #div-search {
-            display: flex;
+            display: none;
         }
 
         /* PC */
@@ -123,7 +123,7 @@
                    title="제목을 클릭하면 재생됩니다. 목록의 헤더를 클릭하면 오름차순/내림차순 정렬이 전환됩니다. [검색창 표시/숨김] 버튼을 누르면 검색 기능 창이 토글됩니다.">도움말</a>
                 <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a>
                 <a th:href="@{/midi/update}" href="#" class="btn btn-secondary btn-sm">정보 업데이트</a>
-                <a href="#" id="btn-toggle-search" class="btn btn-secondary btn-sm" data-show-msg="검색창 표시" data-hide-msg="검색창 숨김">검색창 숨김</a>
+                <a href="#" id="btn-toggle-search" class="btn btn-secondary btn-sm" data-show-msg="검색창 표시" data-hide-msg="검색창 숨김">검색창 표시</a>
             </div>
         </div>
         <div id="div-search" class="form-inline form-group border rounded p-2 align-middle">
@@ -161,7 +161,7 @@
 
 
             <div class="card-body">
-                <p class="card-title" id="play-title">[즐겨찾기] 또는 [홈 화면]에 등록해서 미디플레이어를 사용해보세요.</p>
+                <p class="card-title" id="play-title">[홈 화면]에 등록해서 미디플레이어를 사용해보세요.</p>
             </div>
             <div class="play-btn-panel">
                 <audio id="audio-player" controls preload="auto"></audio>
