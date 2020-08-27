@@ -40,6 +40,16 @@
             margin: 0px auto;
         }
 
+        .search-highlight {
+            background-color: #fff34d;
+            -moz-border-radius: 5px; /* FF1+ */
+            -webkit-border-radius: 5px; /* Saf3-4 */
+            border-radius: 5px; /* Opera 10.5, IE 9, Saf5, Chrome */
+            -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* FF3.5+ */
+            -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* Saf3.0+, Chrome */
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* Opera 10.5+, IE 9.0 */
+        }
+
         @media (min-width: 1025px) {
 
             #audio.player {
@@ -75,6 +85,12 @@
                 <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a>
                 <a th:href="@{/midi/update}" href="#" class="btn btn-secondary btn-sm">정보 업데이트</a></p>
             </div>
+        </div>
+        <div class="form-inline form-group border rounded p-2 align-middle">
+                <label for="search" class="align-middle">검색</label>
+                <input type="text" id="search" class="form-control mx-sm-3 form-control-sm align-middle">
+                <button type="submit" id="btn-search" class="btn btn-primary btn-sm align-middle">검색</button>
+                <button type="submit" id="btn-search-reset" class="btn btn-secondary btn-sm align-middle">초기화</button>
         </div>
         <table class="table table-hover" id="table-info">
             <thead>

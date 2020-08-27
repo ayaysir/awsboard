@@ -37,7 +37,9 @@
                             <td th:text="${post.id}">0</td>
                             <td><a th:text="${post.title}" th:href="${'/' + requestFrom + '/view/' + post.id}">title</a></td>
                             <td th:text="${post.author}">author</td>
-                            <td th:text="${post.modifiedDate}">2000</td>
+                            <td th:text="${#strings.arraySplit(post.modifiedDate,'T')[0]}"
+                                th:title="${#strings.arraySplit(post.modifiedDate,'T')[0]}
+                                + ' ' +${#strings.arraySplit(post.modifiedDate,'T')[1]}">2000</td>
                         </tr>
                     </tbody>
                 </table>

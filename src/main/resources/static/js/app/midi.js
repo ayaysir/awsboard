@@ -174,7 +174,8 @@ const midi = {
 
         // 현재 재생중인 곡 정보를 담는 객체
         const currentPlay = {
-            trEl: null
+            trEl: null,
+            fullEl: []
         }
 
         // ajax로 곡 목록을 가져와 새로운 $tr을 테이블에 append
@@ -183,7 +184,7 @@ const midi = {
             })
             .then(res => res.json())
             .then(data => {
-                data.forEach(song => {
+                data.forEach((song, i) => {
                     const $tr = document.createElement("tr")
                     $tr.setAttribute("title", song.originalFileName + ` | 업로드 일자: [${song.createdDate}]`)
                     $tr.setAttribute("data-id", song.id)
@@ -191,6 +192,7 @@ const midi = {
                     <td class="song-title"><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
                     <td class="text-center">${song.userId}</td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
+                    currentPlay.fullEl.push($tr)
 
                 })
             })
@@ -232,12 +234,38 @@ const midi = {
 
         })
 
-
+        // 내림차순
         document.querySelector("#table-info .head-title").addEventListener("click", e => {
             const $trArr = document.querySelectorAll("#table-info tbody tr")
             const $tbody = document.querySelector("#table-info tbody")
             $tbody.innerHTML = ""
             Array.from($trArr).reverse().forEach((el, i) => {
+                $tbody.append(el)
+            })
+        })
+
+        // 검색
+        document.getElementById("btn-search").addEventListener("click", e => {
+            const keyword = document.getElementById("search").value.toLowerCase()
+            const $tbody = document.querySelector("#table-info tbody")
+
+            $tbody.innerHTML = ""
+
+            Array.from(currentPlay.fullEl).forEach((el, i) => {
+                const title = el.querySelector(".song-title").textContent.toLowerCase()
+                if(title.indexOf(keyword) != -1) {
+                    $tbody.append(el)
+                }
+            })
+        })
+
+        // 검색 초기화
+        document.getElementById("btn-search-reset").addEventListener("click", e => {
+            const $tbody = document.querySelector("#table-info tbody")
+
+            $tbody.innerHTML = ""
+
+            Array.from(currentPlay.fullEl).forEach((el, i) => {
                 $tbody.append(el)
             })
         })
