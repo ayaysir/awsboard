@@ -50,14 +50,25 @@
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* Opera 10.5+, IE 9.0 */
         }
 
+        .midi-title {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        /* PC */
         @media (min-width: 1025px) {
 
             #audio.player {
                 width: 100%
             }
 
+            .midi-logo-mobile {
+                display: none;
+            }
         }
 
+        /* 모바일 */
         @media (min-width: 320px) and (max-width: 480px) {
 
             #audio.player {
@@ -69,6 +80,9 @@
                 font-size: 0.8em;
             }
 
+            .midi-logo-pc {
+                display: none;
+            }
         }
 
     </style>
@@ -79,8 +93,11 @@
     <div class="container">
 
         <div class="row mt-3">
-            <div class="col-12">
-                <h2>미디 플레이어 (v.0.1)</h2>
+            <div class="col-1 midi-logo-pc mx-1 mb-1">
+                <img src="https://dummyimage.com/600x600/000/fff" th:src="@{/img/midi-icon.png}" style="height: 100%;">
+            </div>
+            <div class="col-auto">
+                <h2 class="midi-title"><img src="https://dummyimage.com/600x600/000/fff" th:src="@{/img/midi-icon.png}" style="height: 60px;" class="mx-1 midi-logo-mobile">미디 플레이어 (v.0.1)</h2>
                 <p>제목을 클릭하면 재생됩니다. 목록의 헤더를 클릭하면 오름차순/내림차순 정렬이 전환됩니다.
                 <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a>
                 <a th:href="@{/midi/update}" href="#" class="btn btn-secondary btn-sm">정보 업데이트</a></p>
@@ -90,7 +107,7 @@
                 <label for="search" class="align-middle">검색</label>
                 <input type="text" id="search" class="form-control mx-sm-3 form-control-sm align-middle">
                 <button type="submit" id="btn-search" class="btn btn-primary btn-sm align-middle">검색</button>
-                <button type="submit" id="btn-search-reset" class="btn btn-secondary btn-sm align-middle">초기화</button>
+                <button type="submit" id="btn-search-reset" class="btn btn-secondary btn-sm align-middle mx-1">초기화</button>
         </div>
         <table class="table table-hover" id="table-info">
             <thead>
