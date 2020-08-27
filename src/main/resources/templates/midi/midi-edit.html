@@ -29,6 +29,16 @@
             zoom: 0.1;
         }
 
+        /* 모바일 */
+        @media (min-width: 320px) and (max-width: 767px) {
+            .tbl-col-input {
+                min-width: 200px;
+            }
+
+        }
+
+
+
     </style>
 
 </head>
@@ -47,15 +57,15 @@
                 <tr class="head-title">
                     <th scope="col">ID</th>
                     <th scope="col">원본 파일 이름</th>
-                    <th scope="col">카테고리</th>
-                    <th scope="col">제목</th>
+                    <th scope="col" class="tbl-col-input">카테고리</th>
+                    <th scope="col" class="tbl-col-input">제목</th>
                     <th scope="col">작업</th>
                 </tr>
             </thead>
             <tbody id="table-info-tbody">
                 <tr th:each="song, i: ${list}">
                     <td class="align-middle id" scope="col" th:text="${song.id}">1</td>
-                    <td class="align-middle" scope="col" th:text="${song.originalFileName}">file.mid</td>
+                    <td class="align-middle" scope="col" th:text="${song.originalFileName}">longlonglongongggngngngfile.mid</td>
                     <td class="align-middle" scope="col"><input class="form-control form-sm category" type="text" value="category" th:value="${song.category}"></td>
                     <td class="align-middle" scope="col"><input class="form-control form-sm custom-title" type="text" value="file" th:value="${song.customTitle}"></td>
                     <td class="align-middle" scope="col">
