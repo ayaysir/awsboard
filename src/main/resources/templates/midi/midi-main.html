@@ -56,6 +56,10 @@
             overflow: hidden;
         }
 
+        #div-search {
+            display: flex;
+        }
+
         /* PC */
         @media (min-width: 1025px) {
 
@@ -63,10 +67,8 @@
                 width: 100%
             }
 
-            .midi-logo-mobile {
-                display: none;
-            }
         }
+
 
         /* 모바일 */
         @media (min-width: 320px) and (max-width: 480px) {
@@ -83,6 +85,24 @@
             .midi-logo-pc {
                 display: none;
             }
+
+            #search {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 1199px) {
+
+            .midi-logo-mobile {
+                display: none;
+            }
+        }
+
+        @media (max-width: 1200px) {
+
+            .midi-logo-pc {
+                display: none;
+            }
         }
 
     </style>
@@ -92,18 +112,22 @@
 <body>
     <div class="container">
 
-        <div class="row mt-3">
+        <div class="row mt-3 mb-2">
             <div class="col-1 midi-logo-pc mx-1 mb-1">
                 <img src="https://dummyimage.com/600x600/000/fff" th:src="@{/img/midi-icon.png}" style="height: 100%;">
             </div>
-            <div class="col-auto">
+            <div class="col-auto px-1">
                 <h2 class="midi-title"><img src="https://dummyimage.com/600x600/000/fff" th:src="@{/img/midi-icon.png}" style="height: 60px;" class="mx-1 midi-logo-mobile">미디 플레이어 (v.0.1)</h2>
-                <p>제목을 클릭하면 재생됩니다. 목록의 헤더를 클릭하면 오름차순/내림차순 정렬이 전환됩니다.
+<!--                <p>제목을 클릭하면 재생됩니다. 목록의 헤더를 클릭하면 오름차순/내림차순 정렬이 전환됩니다.-->
+                <a href="#" class="btn btn-info btn-sm" data-placement="bottom" id="btn-help"
+                   onclick="alert(this.getAttribute('title'));"
+                   title="제목을 클릭하면 재생됩니다. 목록의 헤더를 클릭하면 오름차순/내림차순 정렬이 전환됩니다. [검색창 표시/숨김] 버튼을 누르면 검색 기능 창이 토글됩니다.">도움말</a>
                 <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a>
-                <a th:href="@{/midi/update}" href="#" class="btn btn-secondary btn-sm">정보 업데이트</a></p>
+                <a th:href="@{/midi/update}" href="#" class="btn btn-secondary btn-sm">정보 업데이트</a>
+                <a href="#" id="btn-toggle-search" class="btn btn-secondary btn-sm" data-show-msg="검색창 표시" data-hide-msg="검색창 숨김">검색창 숨김</a>
             </div>
         </div>
-        <div class="form-inline form-group border rounded p-2 align-middle">
+        <div id="div-search" class="form-inline form-group border rounded p-2 align-middle">
                 <label for="search" class="align-middle">검색</label>
                 <input type="text" id="search" class="form-control mx-sm-3 form-control-sm align-middle">
                 <button type="submit" id="btn-search" class="btn btn-primary btn-sm align-middle">검색</button>

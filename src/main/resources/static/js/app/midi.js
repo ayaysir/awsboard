@@ -190,7 +190,7 @@ const midi = {
                     $tr.setAttribute("data-id", song.id)
                     $tr.innerHTML = `<th scope="row">${song.id}</th>
                     <td class="song-title"><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
-                    <td class="text-center">${song.userId}</td>`
+                    <td class="text-center"><span class="badge badge-info">${song.userId}</span></td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
                     currentPlay.fullEl.push($tr)
 
@@ -269,6 +269,20 @@ const midi = {
                 $tbody.append(el)
             })
         })
+
+        // 검색창 숨김
+        document.getElementById("btn-toggle-search").addEventListener("click", e => {
+            const $divSearch = document.getElementById("div-search")
+            const currentState = $divSearch.style.display
+            if(currentState == 'none') {
+                $divSearch.style.display = 'flex'
+                e.target.textContent = e.target.dataset.hideMsg
+            } else {
+               $divSearch.style.display = 'none'
+               e.target.textContent = e.target.dataset.showMsg
+            }
+        })
+
     },
 
 
