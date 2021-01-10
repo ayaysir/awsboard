@@ -120,8 +120,8 @@
             <div class="col-auto px-1">
                 <h2 class="midi-title"><img src="https://dummyimage.com/600x600/000/fff" th:src="@{/img/midi-icon.png}" style="height: 60px;" class="mx-1 midi-logo-mobile">미디 플레이어 (v.0.1)</h2>
                 <a href="#" class="btn btn-info btn-sm" data-placement="bottom" id="btn-help"
-                   onclick="alert(this.getAttribute('title'));"
-                   title="제목을 클릭하면 재생됩니다. 목록의 헤더를 클릭하면 오름차순/내림차순 정렬이 전환됩니다. [검색창 표시/숨김] 버튼을 누르면 검색 기능 창이 토글됩니다.">도움말</a>
+                   data-toggle="modal" data-target="#notice-modal"
+                   title="">도움말</a>
                 <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a>
                 <a th:href="@{/midi/update}" href="#" class="btn btn-secondary btn-sm">정보 업데이트</a>
                 <a href="#" id="btn-toggle-search" class="btn btn-secondary btn-sm" data-show-msg="검색창 표시" data-hide-msg="검색창 숨김">검색창 표시</a>
@@ -138,14 +138,14 @@
                 <tr class="head-title">
                     <th scope="col" style="width: 60px">ID</th>
                     <th scope="col" >제목</th>
-                    <th scope="col" style="width: 20%" class="text-center">업로더</th>
+                    <th scope="col" style="width: 20%" class="text-center">퍼가기</th>
                 </tr>
             </thead>
             <tbody id="table-info-tbody">
                 <tr th:if="${false}">
                     <th scope="col">1</th>
                     <th scope="col"><span class="th-title">목dfdfdsfadfdsf avewrtw etewtew twt  ret aewt wt weewvcewrvaewrvvewrervwevrwervewraewrvewrewvrewrervewrewvewr</span></th>
-                    <th scope="col" class="text-center">업로더</th>
+                    <th scope="col" class="text-center">퍼가기</th>
                 </tr><tr th:if="${false}">
                     <th scope="col">2</th>
                     <th scope="col">제목</th>
@@ -169,9 +169,40 @@
             </div>
         </div>
 
+        <div id="notice-modal" class="modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">사용법 및 공지사항</h5>
+                        <button type="button" class="close" data-dismiss="moda" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul>
+                            <li>노래의 제목을 클릭하면 재생됩니다. </li>
+                            <li>목록의 헤더를 클릭하면 오름차순/내림차순 정렬이 전환됩니다.</li>
+                            <li>[검색창 표시/숨김] 버튼을 누르면 검색 기능 창이 토글됩니다.</li>
+                        </ul>
+                        <h4>공지사항</h4>
+                        <ul>
+                            <li>[퍼가기] 기능을 신설했습니다. HTML 사용 가능한 게시판에 붙여넣기 해서 미디 파일을 다른 사람들과 공유하세요.</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="/js/app/midi.js"> </script>
     <script>
         midi.playerInit()

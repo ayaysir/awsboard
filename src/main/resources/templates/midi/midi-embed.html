@@ -1,0 +1,81 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+/* http://meyerweb.com/eric/tools/css/reset/
+v2.0 | 20110126
+License: none (public domain)
+*/
+
+html, body, h3, h4 {
+margin: 0;
+border: 0;
+padding: 10px;
+}
+
+html {
+background-color: transparent;
+}
+
+#wrapper {
+background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border-radius: 10px;
+padding: 8px;
+}
+
+audio {
+    width: 100%
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+.label-category {
+    color: gray;
+    font-weight: normal;
+}
+
+p {
+    margin-block-start: 0.6em;
+    margin-block-end: 0.6em;
+}
+
+.uploaded-date {
+    text-align: right;
+}
+
+.label-promotion, .uploaded-date {
+    font-size: 0.8em;
+}
+
+a, a:visited {
+    text-decoration: none;
+    color: teal;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <h3><span class="label-category" th:text="'[' + ${midi.getCategory() + ']'}">[Uploaded]</span>&nbsp;<span th:text="${midi.getCustomTitle()}">Dogs</span></h3>
+        <audio src="/api/v1/midi/mp3/1" controls preload="auto" th:src="${ '/api/v1/midi/mp3/' + midi.getId()}"></audio>
+        <p th:text="${midi}" th:if="${false}"></p>
+        <p class="uploaded-date"><i>Uploaded in <span th:text="${#strings.arraySplit(midi.getCreatedDate(),'T')[0]}">2010-10-14</span></i></p>
+<!--        <p clss="label-promotion" th:if="${labelPromotion?}" th:text="${labelPromotion}"></p>-->
+        <p class="label-promotion">이 음악은 <a href="http://awsboard.yoonbumtae.com:9090/midi" th:href="@{/midi}" target="_blank">
+            미디 플레이어</a>를 통해 업로드된 미디 파일입니다.
+            <br>더 많은 미디 음악을 업로드 및 감상하고 싶다면
+            <br><a href="http://awsboard.yoonbumtae.com:9090/midi" th:href="@{/midi}" target="_blank">미디 플레이어</a> 사이트를 방문해보세요.</p>
+        <p>Powered by <a href="http://yoonbumtae.com/" target="_blank">BGSMM</a></p>
+    </div>
+</body>
+</html>

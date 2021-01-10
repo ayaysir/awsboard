@@ -37,6 +37,7 @@ public class MidiService {
         midiRepository.delete(midi);
     }
 
+    // 미디 한 곡 불러오기
     public MidiResponseDTO findById(Long id) {
         Midi midi = midiRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 파일이 없습니다. id=" + id));
@@ -57,6 +58,7 @@ public class MidiService {
                 .map(MidiPublicResponseDTO::new)
                 .collect(Collectors.toList());
     }
+
 
 
 }

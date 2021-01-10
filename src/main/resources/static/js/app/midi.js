@@ -186,15 +186,20 @@ const midi = {
             .then(data => {
                 data.forEach((song, i) => {
                     const $tr = document.createElement("tr")
-                    $tr.setAttribute("title", song.originalFileName + ` | 업로드 일자: [${song.createdDate}]`)
+                    $tr.setAttribute("title", song.originalFileName + ` | 업로드 일자: [${song.createdDate}] | 업로더 아이디: ${song.userId}`)
                     $tr.setAttribute("data-id", song.id)
                     $tr.innerHTML = `<th scope="row">${song.id}</th>
                     <td class="song-title"><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
-                    <td class="text-center"><span class="badge badge-info">${song.userId}</span></td>`
+                    <td class="text-center"><span class="badge badge-info share-html">HTML</span></td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
                     currentPlay.fullEl.push($tr)
-
                 })
+            
+        
+                // 시작시 테이블 뒤집기 설정되어있으면 뒤집기
+                if(localStorage.getItem("reverse_order_start") && localStorage.getItem("reverse_order_start") == "yes") {
+                    reverseTable()
+                } 
             })
 
         // 아이디를 정보로 받아 오디오를 재생하는 함수
@@ -205,8 +210,19 @@ const midi = {
             audioCtx.load()
             audioCtx.play()
             
-
         }
+        
+        // 테이블 뒤집기
+        function reverseTable() {
+            const $trArr = document.querySelectorAll("#table-info tbody tr")
+            const $tbody = document.querySelector("#table-info tbody")
+            $tbody.innerHTML = ""
+            Array.from($trArr).reverse().forEach((el, i) => {
+                $tbody.append(el)
+            })
+        }
+        
+        
 
         // 제목을 클릭하면 노래가 재생
         document.addEventListener("click", e => {
@@ -236,13 +252,16 @@ const midi = {
 
         // 내림차순
         document.querySelector("#table-info .head-title").addEventListener("click", e => {
-            const $trArr = document.querySelectorAll("#table-info tbody tr")
-            const $tbody = document.querySelector("#table-info tbody")
-            $tbody.innerHTML = ""
-            Array.from($trArr).reverse().forEach((el, i) => {
-                $tbody.append(el)
-            })
+            reverseTable()
+            
+            if(localStorage.getItem("reverse_order_start") && localStorage.getItem("reverse_order_start") == "yes") {
+                localStorage.setItem("reverse_order_start", "no")   
+            } else {
+                localStorage.setItem("reverse_order_start", "yes")  
+            }
         })
+        
+        // 시작 시 내림차순 
 
         // 검색
         document.getElementById("btn-search").addEventListener("click", e => {
@@ -293,6 +312,8 @@ const midi = {
                localStorage.setItem("midi_search_status", "close")
             }
         }
+        
+        
 
     },
 

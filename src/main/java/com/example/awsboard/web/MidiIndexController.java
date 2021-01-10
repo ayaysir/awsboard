@@ -4,10 +4,13 @@ import com.example.awsboard.config.auth.LoginUser;
 import com.example.awsboard.config.auth.dto.SessionUser;
 import com.example.awsboard.service.posts.MidiService;
 import com.example.awsboard.web.dto.midi.MidiPublicResponseDTO;
+import com.example.awsboard.web.dto.midi.MidiResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -24,7 +27,7 @@ public class MidiIndexController {
         return modelAndView;
     }
 
-    @GetMapping("midi/update")
+    @GetMapping("/midi/update")
     public String updateInfoPage(Model model, @LoginUser SessionUser user) {
 
         List<MidiPublicResponseDTO> list = null;
@@ -48,6 +51,18 @@ public class MidiIndexController {
             model.addAttribute("loginUser", user);
         }
         return "midi/midi-main";
+    }
+
+    @GetMapping("/midi-to-mp3")
+    public String midiToMp3(Model model) {
+        return "midi/midi-to-mp3";
+    }
+
+    @GetMapping("/midi-embed")
+    public String getMidiEmbedHTML(Model model, Long id) {
+        MidiResponseDTO midi = midiService.findById(id);
+        model.addAttribute("midi", midi);
+        return "midi/midi-embed";
     }
 
 

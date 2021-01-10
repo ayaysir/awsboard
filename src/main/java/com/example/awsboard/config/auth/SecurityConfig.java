@@ -38,6 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/api/v1/midi").permitAll()
                 .antMatchers(HttpMethod.GET,"/midi").permitAll()
                 .antMatchers(HttpMethod.GET,"/midi/").permitAll()
+                .antMatchers(HttpMethod.GET,"/midi-to-mp3").permitAll()
+                .antMatchers(HttpMethod.GET,"/midi-to-mp3/").permitAll()
+                .antMatchers(HttpMethod.GET,"/midi-embed").permitAll()
+                .antMatchers(HttpMethod.GET,"/midi-embed/").permitAll()
 
 //                .antMatchers(HttpMethod.GET, "/upload").permitAll()
 //                .antMatchers("/api/v1/midi/**").permitAll()
