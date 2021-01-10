@@ -222,6 +222,15 @@ const midi = {
             })
         }
         
+        function copyToClipboard(text) {
+            var t = document.createElement("textarea");
+            document.body.appendChild(t);
+            t.value = text;
+            t.select();
+            document.execCommand('copy');
+            document.body.removeChild(t);
+            alert("복사되었습니다.")
+        }
         
 
         // 제목을 클릭하면 노래가 재생
@@ -235,7 +244,18 @@ const midi = {
                 
                 // 플레이어 정보 갱신
                 document.getElementById("play-title").innerHTML = parentEl.getElementsByClassName("song-title")[0].innerHTML
+            } else if(e.target && e.target.classList.contains("share-html")) {
+                const songId = $(e.target).closest("tr").data("id")
+                // console.log(songId)
+                const currnentOrigin = window.location.origin
+                $("#html-embed-modal").modal("show")
+                $("#html-embed-code").text(`<iframe style="width: 500px; height: 336px; border: none;" src="${currnentOrigin}/midi-embed?id=${songId}"></iframe>`)
             }
+        })
+        
+        $("#btn-copy-html").on("click", e => {
+            const text = $("#html-embed-code").val()
+            copyToClipboard(text)
         })
 
         // 곡이 끝나면 (ended) tr.nextSibling으로 다음 곡을 찾아 재생
