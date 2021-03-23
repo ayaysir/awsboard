@@ -9,14 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LogSaveRequestDTO {
 
-    private String boardName;
+    private String boardName, ipAddress;
     private Long articleId, userId;
 
     @Builder
-    public LogSaveRequestDTO(String boardName, Long articleId, Long userId) {
+    public LogSaveRequestDTO(String boardName, Long articleId, Long userId, String ipAddress) {
         this.boardName = boardName;
         this.articleId = articleId;
         this.userId = userId;
+        this.ipAddress = ipAddress;
     }
 
     public Log toEntity() {
@@ -24,6 +25,7 @@ public class LogSaveRequestDTO {
                 .boardName(boardName)
                 .articleId(articleId)
                 .userId(userId)
+                .ipAddress(ipAddress)
                 .build();
     }
 }

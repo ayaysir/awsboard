@@ -25,10 +25,13 @@ public class Log extends BaseTimeEntity {
 
     private Long userId;
 
+    private String ipAddress;
+
     @Builder
-    public Log(String boardName, Long articleId, Long userId) {
+    public Log(String boardName, Long articleId, Long userId, String ipAddress) {
         this.boardName = boardName;
         this.articleId = articleId;
         this.userId = userId;
+        this.ipAddress = ipAddress;
     }
 }

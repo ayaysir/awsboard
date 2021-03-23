@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -98,7 +99,7 @@ public class IndexController {
     }
 
     @GetMapping("/posts/view/{id}")
-    public String postView(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser) {
+    public String postView(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser, HttpServletRequest request) {
 
         PostsResponseDTO dto = postsService.findById(id);
         dto.setViewCount(logService.getViewCountByBoardNameAndArticleId("posts", dto.getId()));
@@ -107,13 +108,16 @@ public class IndexController {
         model.addAttribute("requestFrom", "posts");
 
         Long userId = -99l;
+        String remoteIp = request.getRemoteAddr();
         if(loginUser != null) {
             System.out.println(">> DTO: " + dto.getAuthorId());
             System.out.println(">> LoginUser: " + loginUser.getId());
 
             userId = loginUser.getId();
         }
-        logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("posts").userId(loginUser.getId()).build());
+        logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("posts").userId(userId).ipAddress(remoteIp).build());
+
+        System.out.println(remoteIp);
 
         return "posts-view";
     }
@@ -181,7 +185,7 @@ public class IndexController {
     }
 
     @GetMapping("/notice/view/{id}")
-    public String noticeView(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser) {
+    public String noticeView(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser, HttpServletRequest request) {
 
         NoticeResponseDTO dto = noticeService.findById(id);
         dto.setViewCount(logService.getViewCountByBoardNameAndArticleId("notice", dto.getId()));
@@ -190,13 +194,16 @@ public class IndexController {
         model.addAttribute("requestFrom", "notice");
 
         Long userId = -99l;
+        String remoteIp = request.getRemoteAddr();
         if(loginUser != null) {
             System.out.println(">> DTO: " + dto.getAuthorId());
             System.out.println(">> LoginUser: " + loginUser.getId());
 
             userId = loginUser.getId();
         }
-        logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("notice").userId(loginUser.getId()).build());
+
+        logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("notice").userId(userId).ipAddress(remoteIp).build());
+
 
         return "posts-view";
     }

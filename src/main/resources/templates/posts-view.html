@@ -49,8 +49,10 @@ Navigate와 '-하는 사람'의 접미사 -er이 만나 탄생한 이름이다.[
             </div>
 
             <a th:href="${requestFrom eq 'posts' ? '/' : ('/' + requestFrom)}" role="button" class="btn btn-secondary">목록</a>
-            <a th:if="${loginUser.id eq post.authorId}" role="button" class="btn btn-primary active" th:href="${'/' + requestFrom + '/update/' + post.id}">수정</a>
-            <button th:if="${loginUser.id eq post.authorId}" class="btn btn-danger" id="btn-delete">삭제</button>
+
+            <a th:if="${loginUser ne null and (loginUser.id eq post.authorId)}" role="button" class="btn btn-primary active" th:href="${'/' + requestFrom + '/update/' + post.id}">수정</a>
+            <button th:if="${loginUser ne null and (loginUser.id eq post.authorId)}" class="btn btn-danger" id="btn-delete">삭제</button>
+
         </div>
 
         <div th:replace="fragments/common :: footer">-- thymeleaf footer will be inserted here. --</div>
