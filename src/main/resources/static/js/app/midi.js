@@ -186,11 +186,11 @@ const midi = {
             .then(data => {
                 data.forEach((song, i) => {
                     const $tr = document.createElement("tr")
-                    $tr.setAttribute("title", song.originalFileName + ` | 업로드 일자: [${song.createdDate}] | 업로더 아이디: ${song.userId}`)
+                    $tr.setAttribute("title", song.originalFileName + ` | 업로드 일자: [${song.createdDate.replace(/T/ig, " ")}] | 업로더 아이디: ${song.userId}`)
                     $tr.setAttribute("data-id", song.id)
                     $tr.innerHTML = `<th scope="row">${song.id}</th>
                     <td class="song-title"><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
-                    <td class="text-center"><span class="badge badge-info share-html">HTML</span></td>`
+                    <td class="text-center"><span class="badge rounded-pill badge-info bg-info share-html">HTML</span></td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
                     currentPlay.fullEl.push($tr)
                 })
@@ -320,15 +320,16 @@ const midi = {
 
         function toggleSearch(isToShow) {
             const $divSearch = document.getElementById("div-search")
-            const $button = document.getElementById("btn-toggle-search")
+//            const $button = document.getElementById("btn-toggle-search")
+            const $button = $("#btn-toggle-search")
 
             if(isToShow) {
                 $divSearch.style.display = 'flex'
-                $button.textContent = $button.dataset.hideMsg
+                $button.find("span").text($button.data("hideMsg"))
                 localStorage.setItem("midi_search_status", "open")
             } else {
                $divSearch.style.display = 'none'
-               $button.textContent = $button.dataset.showMsg
+               $button.find("span").text($button.data("showMsg"))
                localStorage.setItem("midi_search_status", "close")
             }
         }

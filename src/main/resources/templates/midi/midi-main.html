@@ -6,8 +6,19 @@
     <title>미디 플레이어</title>
     <link rel="apple-touch-icon" type="image/png" href="/img/midi-icon.png">
     <link rel="shortcut icon" type="image/png" href="/img/midi-icon.png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    />
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://bootswatch.com/5/vapor/bootstrap.min.css">
     <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
         .song-title, .head-title {
             cursor: pointer;
         }
@@ -21,10 +32,10 @@
         #play-window {
             position: fixed;
             z-index: 50;
-            bottom: -2px;
+            bottom: -5px;
             right: 0px;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.9)
+            /* background-color: rgba(255, 255, 255, 0.9); */
         }
 
         #audio-player {
@@ -55,6 +66,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
+            font-weight: bold;
         }
 
         #div-search {
@@ -65,19 +77,32 @@
             cursor: pointer;
         }
 
+        .desktop-only {
+            margin-left: 5px;
+        }
+
+        #btn-search, #btn-search-reset {
+            width: 80px;
+        }
+
+        .close {
+            border: none;
+            background: none;
+            color: white;
+            font-weight: bolder;
+            text-shadow: 0 0 1px rgb(255 255 255 / 60%), 0 0 3px rgb(255 255 255 / 50%), 0 0 0.5rem rgb(255 255 255 / 30%), 0 0 2rem rgb(255 255 255 / 20%);
+        }
+
         /* PC */
         @media (min-width: 1025px) {
-
             #audio.player {
                 width: 100%
             }
-
         }
 
 
         /* 모바일 */
         @media (min-width: 320px) and (max-width: 480px) {
-
             #audio.player {
                 min-width: 150px;
                 width: 225px;
@@ -94,22 +119,23 @@
             #search {
                 font-size: 16px;
             }
+
+            .desktop-only {
+                display: none;
+            }
         }
 
         @media (min-width: 1199px) {
-
             .midi-logo-mobile {
                 display: none;
             }
         }
 
         @media (max-width: 1200px) {
-
             .midi-logo-pc {
                 display: none;
             }
         }
-
     </style>
 
 </head>
@@ -125,21 +151,21 @@
                 <h2 class="midi-title"><img src="https://dummyimage.com/600x600/000/fff" th:src="@{/img/midi-icon.png}" style="height: 60px;" class="mx-1 midi-logo-mobile">미디 플레이어 (v.0.1)</h2>
                 <a href="#" class="btn btn-info btn-sm" data-placement="bottom" id="btn-help"
                    data-toggle="modal" data-target="#notice-modal"
-                   title="">도움말</a>
-                <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a>
-                <a th:href="@{/midi/update}" href="#" class="btn btn-secondary btn-sm">정보 업데이트</a>
-                <a href="#" id="btn-toggle-search" class="btn btn-secondary btn-sm" data-show-msg="검색창 표시" data-hide-msg="검색창 숨김">검색창 표시</a>
+                   title=""><i class="fas fa-question-circle"></i><span class="desktop-only">도움말</span></a>
+                <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i><span class="desktop-only">업로드</span></a>
+                <a th:href="@{/midi/update}" href="#" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i><span class="desktop-only">업데이트</span></a>
+                <a href="#" id="btn-toggle-search" class="btn btn-secondary btn-sm" data-show-msg="검색창 표시" data-hide-msg="검색창 숨김"><i class="fas fa-search"></i><span class="desktop-only">검색창 표시</span></a>
             </div>
         </div>
         <div id="div-search" class="form-inline form-group border rounded p-2 align-middle">
-                <label for="search" class="align-middle">검색</label>
+<!--                <label for="search" class="align-middle">검색</label>-->
                 <input type="text" id="search" class="form-control mx-sm-3 form-control-sm align-middle">
                 <button type="submit" id="btn-search" class="btn btn-primary btn-sm align-middle">검색</button>
                 <button type="submit" id="btn-search-reset" class="btn btn-secondary btn-sm align-middle mx-1">초기화</button>
         </div>
         <table class="table table-hover" id="table-info">
             <thead>
-                <tr class="head-title">
+                <tr class="head-title table-dark">
                     <th scope="col" style="width: 60px">ID</th>
                     <th scope="col" >제목</th>
                     <th scope="col" style="width: 20%" class="text-center">퍼가기</th>
@@ -148,12 +174,12 @@
             <tbody id="table-info-tbody">
                 <tr th:if="${false}">
                     <th scope="col">1</th>
-                    <th scope="col"><span class="th-title">목dfdfdsfadfdsf avewrtw etewtew twt  ret aewt wt weewvcewrvaewrvvewrervwevrwervewraewrvewrewvrewrervewrewvewr</span></th>
+                    <th scope="col"><span class="th-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </span></th>
                     <th scope="col" class="text-center share-html">퍼가기</th>
                 </tr><tr th:if="${false}">
                     <th scope="col">2</th>
-                    <th scope="col">제목</th>
-                    <th scope="col">업로더dddefefefefefefefefefefefefefefefefefefefefefefefefefefefef</th>
+                    <th scope="col">한글 제목</th>
+                    <th scope="col">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </th>
                 </tr><tr th:if="${false}">
                     <th scope="col">3333</th>
                     <th scope="col" class=".head-title">제목</th>
@@ -162,11 +188,9 @@
             </tbody>
         </table>
 
-        <div id="play-window" class="card border-info mb-1">
-
-
+        <div id="play-window" class="card bg-primary mb-1">
             <div class="card-body">
-                <p class="card-title" id="play-title">[홈 화면]에 등록해서 미디플레이어를 사용해보세요.</p>
+                <p class="card-title" id="play-title">미디플레이어를 <span class="text-info"><strong>[홈 화면]</strong></span>에 등록해 사용해보세요.</p>
             </div>
             <div class="play-btn-panel">
                 <audio id="audio-player" controls preload="auto"></audio>
@@ -225,7 +249,6 @@
 
     </div>
 
-<!--    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
     <script
             src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
