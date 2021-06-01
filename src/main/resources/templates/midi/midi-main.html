@@ -155,6 +155,7 @@
                 <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i><span class="desktop-only">업로드</span></a>
                 <a th:href="@{/midi/update}" href="#" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i><span class="desktop-only">업데이트</span></a>
                 <a href="#" id="btn-toggle-search" class="btn btn-secondary btn-sm" data-show-msg="검색창 표시" data-hide-msg="검색창 숨김"><i class="fas fa-search"></i><span class="desktop-only">검색창 표시</span></a>
+                <a href="#" id="btn-shuffle" class="btn btn-dark btn-sm"><i class="fas fa-random"></i><span class="desktop-only">목록 셔플</span></a>
             </div>
         </div>
         <div id="div-search" class="form-inline form-group border rounded p-2 align-middle">
@@ -166,7 +167,8 @@
         <table class="table table-hover" id="table-info">
             <thead>
                 <tr class="head-title table-dark">
-                    <th scope="col" style="width: 60px">ID</th>
+                    <th scope="col" style="width: 60px">ID<i id="order-icon" class="fas fa-arrow-up" style="margin-left: 5px; color: dimgray;"></i>
+                    </th>
                     <th scope="col" >제목</th>
                     <th scope="col" style="width: 20%" class="text-center">퍼가기</th>
                 </tr>

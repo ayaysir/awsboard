@@ -175,7 +175,8 @@ const midi = {
         // 현재 재생중인 곡 정보를 담는 객체
         const currentPlay = {
             trEl: null,
-            fullEl: []
+            fullEl: [],
+            isShuffleOn: false,
         }
 
         // ajax로 곡 목록을 가져와 새로운 $tr을 테이블에 append
@@ -188,7 +189,7 @@ const midi = {
                     const $tr = document.createElement("tr")
                     $tr.setAttribute("title", song.originalFileName + ` | 업로드 일자: [${song.createdDate.replace(/T/ig, " ")}] | 업로더 아이디: ${song.userId}`)
                     $tr.setAttribute("data-id", song.id)
-                    $tr.innerHTML = `<th scope="row">${song.id}</th>
+                    $tr.innerHTML = `<th scope="row" class="song-id">${song.id}</th>
                     <td class="song-title"><span class="text-muted">[${song.category}]</span> ${song.customTitle}</td>
                     <td class="text-center"><span class="badge rounded-pill badge-info bg-info share-html">HTML</span></td>`
                     document.getElementById("table-info-tbody").appendChild($tr)
@@ -212,7 +213,7 @@ const midi = {
             
         }
         
-        // 테이블 뒤집기
+        // 테이블 뒤집기 (물리)
         function reverseTable() {
             const $trArr = document.querySelectorAll("#table-info tbody tr")
             const $tbody = document.querySelector("#table-info tbody")
@@ -220,6 +221,32 @@ const midi = {
             Array.from($trArr).reverse().forEach((el, i) => {
                 $tbody.append(el)
             })
+        }
+
+        // 테이블 id 순으로 정렬
+        function orderTable(isAscendOrder = true) {
+            const $trArr = document.querySelectorAll("#table-info tbody tr")
+            const $tbody = document.querySelector("#table-info tbody")
+            $tbody.innerHTML = ""
+            Array.from($trArr)
+                .sort((a, b) => isAscendOrder ? b.dataset.id - a.dataset.id : a.dataset.id - b.dataset.id)
+                .forEach((el, i) => {
+                    $tbody.append(el)
+                })
+        }
+
+        // 테이블 순서 셔플
+        function shuffleTable() {
+            const $trArr = document.querySelectorAll("#table-info tbody tr")
+            const $tbody = document.querySelector("#table-info tbody")
+            $tbody.innerHTML = ""
+            Array.from($trArr)
+                .map(el => [Math.random(), el])
+                .sort((a, b) => a[0] - b[0])
+                .map(el => el[1])
+                .forEach((el, i) => {
+                    $tbody.append(el)
+                })
         }
         
         function copyToClipboard(text) {
@@ -270,7 +297,23 @@ const midi = {
 
         })
 
-        // 내림차순
+        // shuffle buttton 색깔, 순서 아이콘 관리
+        function manageListStatus() {
+            const $shuffleButton = $("#btn-shuffle")
+            const $orderIcon = $("#order-icon")
+
+            if(currentPlay.isShuffleOn) {
+                $shuffleButton.removeClass("btn-dark").addClass("btn-danger")
+                $orderIcon.removeClass(["fa-arrow-up", "fa-arrow-down", "fa-random"]).addClass("fa-random")
+            } else {
+                $shuffleButton.removeClass("btn-danger").addClass("btn-dark")
+                $orderIcon.removeClass(["fa-arrow-up", "fa-arrow-down", "fa-random"])
+                    .addClass(localStorage.getItem("reverse_order_start") === "yes" ? "fa-arrow-down" : "fa-arrow-up")
+            }
+
+        }
+
+        // 내림차순 이벤트
         document.querySelector("#table-info .head-title").addEventListener("click", e => {
             reverseTable()
             
@@ -279,6 +322,18 @@ const midi = {
             } else {
                 localStorage.setItem("reverse_order_start", "yes")  
             }
+            manageListStatus()
+        })
+
+        // 셔플 이벤트
+        $("#btn-shuffle").on("click", function(e) {
+            if(!currentPlay.isShuffleOn) {
+                shuffleTable()
+            } else {
+                orderTable(localStorage.getItem("reverse_order_start") === "yes")
+            }
+            currentPlay.isShuffleOn = !currentPlay.isShuffleOn
+            manageListStatus()
         })
         
         // 시작 시 내림차순 
@@ -314,13 +369,8 @@ const midi = {
             toggleSearch(localStorage.getItem("midi_search_status") != "open")
         });
 
-        (() => {
-            toggleSearch(localStorage.getItem("midi_search_status") == "open")
-        })();
-
         function toggleSearch(isToShow) {
             const $divSearch = document.getElementById("div-search")
-//            const $button = document.getElementById("btn-toggle-search")
             const $button = $("#btn-toggle-search")
 
             if(isToShow) {
@@ -334,7 +384,12 @@ const midi = {
             }
         }
         
-        
+        // 최초로 실행할 작업들
+        function init() {
+            toggleSearch(localStorage.getItem("midi_search_status") == "open")
+            manageListStatus()
+        }
+        init()
 
     },
 

@@ -28,13 +28,14 @@ public class LogService {
 
     @Transactional
     public Long getViewCountByBoardNameAndArticleId(String boardName, Long articleId) {
-        Map<Long, List<Log>> filteredMap = logRepository.getListGroupByBoardNameAndArticleId(boardName.toLowerCase(), articleId).stream()
-                .collect(Collectors.groupingBy(Log::getUserId, HashMap::new, toList()));
+        Map<String, List<Log>> filteredMap = logRepository.getListGroupByBoardNameAndArticleId(boardName.toLowerCase(), articleId).stream()
+                .collect(Collectors.groupingBy(Log::getIpAddress, HashMap::new, toList()));
 
         // Log::getUserId
         // x -> x.getUserId()
 
-        System.out.println(filteredMap);
+        System.out.println("filteredMap: " + filteredMap);
         return Long.valueOf(filteredMap.size());
+
     }
 }
