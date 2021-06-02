@@ -15,29 +15,29 @@
 
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 my-4">
                     <h1 th:text="${post.title}">게시글 조회</h1>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label class="col-form-label" for="input-id">글 번호</label>
                 <input type="text" class="form-control" readonly id="input-id" th:value="${post.id}" value="1">
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label class="col-form-label" for="input-author">작성자</label>
                 <input type="text" class="form-control" id="input-author" th:value="${post.author}" readonly value="김똑딱">
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label class="col-form-label" for="input-author">조회수</label>
                 <input type="text" class="form-control" id="view-count" th:value="${post.viewCount}" readonly value="3">
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label>내용</label>
-                <div id="div-content" th:text="${post.content}" class="border rounded p-2" style="overflow: auto; white-space: pre-wrap;">네이버(영어: Naver[2])는 대한민국의 포털 사이트이다.
+                <div id="div-content" th:text="${post.content}" class="border rounded p-2 card border-primary" style="overflow: auto; white-space: pre-wrap; color: white;">네이버(영어: Naver[2])는 대한민국의 포털 사이트이다.
 1997년 2월 26일 이해진, 권혁일, 김보경, 구창진,
 오승환, 최재영,
 강석호 등으로 구성된 삼성SDS의 사내 벤처에서 '웹글라이더'라는 이름으로 시작해 1998년 1월에 분리된 네이버컴 주식회사에서 운영하다가

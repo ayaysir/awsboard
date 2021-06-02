@@ -15,27 +15,27 @@
 
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 my-4">
                     <h1>게시글 수정</h1>
                 </div>
             </div>
             <form>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label class="col-form-label" for="input-id">글 번호</label>
                     <input type="text" class="form-control" readonly id="input-id" th:value="${post.id}">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label class="col-form-label" for="input-title">제목</label>
                     <input type="text" class="form-control" placeholder="제목을 입력하세요." id="input-title" th:value="${post.title}">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label class="col-form-label" for="input-author">작성자</label>
                     <input type="text" class="form-control" placeholder="작성자를 입력하세요." id="input-author" th:value="${post.author}" readonly>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="txt-content">내용</label>
                     <textarea class="form-control" id="txt-content" rows="3" placeholder="내용을 입력하세요." th:text="${post.content}"></textarea>
                 </div>

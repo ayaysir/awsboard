@@ -4,19 +4,19 @@
 <head th:replace="fragments/common :: html-head">
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet"
+<!--    <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-          crossorigin="anonymous">
+          crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://bootswatch.com/5/vapor/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
         <div th:replace="fragments/common :: header(${requestFrom})">-- thymeleaf header will be inserted here. --</div>
 
-
         <div class="row">
-            <div class="col-md-6">
-                <h2 th:text="${boardTitle}">자유게시판</h2>
+            <div class="col-md-6 my-4">
+                <h1 th:text="${boardTitle}">자유게시판</h1>
             </div>
         </div>
 
@@ -24,7 +24,7 @@
             <div class="col-md-12">
                 <!-- 목록 출력 영역 -->
                 <table class="table table-horizontal table-bordered">
-                    <thead class="thead-strong">
+                    <thead class="thead-strong table table-secondary">
                         <tr>
                             <th>번호</th>
                             <th>제목</th>
@@ -78,8 +78,11 @@
 
                 <div th:if="${#strings.isEmpty(userName)}">
                     <!-- 스프링 시큐리티에서 기본 제공하는 URL - 별도 컨트롤러 작성 필요 없음 -->
-                    <a href="/oauth2/authorization/google" class="btn btn-sm btn-success active" role="button">Google Login</a>
-                    <a href="/oauth2/authorization/naver" role="button"><img src="./nid-button.png" th:src="@{/img/nid-button.png}" alt="네이버 아이디로 로그인" title="네이버 아이디로 로그인" style="height: 30px;"></a>
+                    <a href="/oauth2/authorization/google" class="btn btn-sm btn-info active" role="button">Google Login</a>
+                    <a href="/oauth2/authorization/naver" role="button" class="btn btn-sm btn-success active">
+                        NAVER Login
+<!--                        <img src="./nid-button.png" th:src="@{/img/nid-button.png}" alt="네이버 아이디로 로그인" title="네이버 아이디로 로그인" style="height: 30px;">-->
+                    </a>
                 </div>
             </div>
             <div th:if="${isAllowWrite}" class="col-md-2">
