@@ -1,5 +1,22 @@
 const main = {
 
+    youtubeParser(url) {
+        const container = "[youtube::ID]"
+        const regExp = /^https?\:\/\/(?:www\.youtube(?:\-nocookie)?\.com\/|m\.youtube\.com\/|youtube\.com\/)?(?:ytscreeningroom\?vi?=|youtu\.be\/|vi?\/|user\/.+\/u\/\w{1,2}\/|embed\/|watch\?(?:.*\&)?vi?=|\&vi?=|\?(?:.*\&)?vi?=)([^#\&\?\n\/<>"']*)/i;
+        const match = url.match(regExp);
+        return (match && match[1].length == 11) ? container.replace("ID", match[1]) : url;
+    },
+
+    youtubeWrapper(match, p1) {
+        const container = `
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/#ID#" title="YouTube video player"
+            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </div>`
+        return container.replace("#ID#", p1)
+    },
+
     init() {
         const self = this
         $("#btn-save").on("click", e => {
@@ -14,11 +31,20 @@ const main = {
             self.delete()
         })
 
+        // 글에서 링크 감지
+        // + 유튜브인 경우 유튜브 iframe으로 대체
         if($("#div-content").length != 0) {
             const content = $("#div-content").text()
+
+            // 유튜브 URL 찾는 패턴
+            const youtubeUrl = /(http:|https:)?(\/\/)?(www\.)?(youtube.com|youtu.be)\/(watch|embed)?(\?v=|\/)?(\S+)?/g
             const expUrl = /(((http(s)?:\/\/)\S+(\.[^(\n|\t|\s,)]+)+)|((http(s)?:\/\/)?(([a-zA-z\-_]+[0-9]*)|([0-9]*[a-zA-z\-_]+)){2,}(\.[^(\n|\t|\s,)]+)+))+/gi
-            const changedContent = content.replace(expUrl, "<a href='$&' target='_blank'>$&</a>")
-            $("#div-content").html(changedContent)
+            const youtubeContainerRegex = /\[youtube::(.+)\]/g
+
+            const wrappedContent = content.replace(youtubeUrl, self.youtubeParser)
+                .replace(expUrl, "<a href='$&' target='_blank'>$&</a>").replace(youtubeContainerRegex, self.youtubeWrapper)
+
+            $("#div-content").html(wrappedContent)
         }
 
     },
