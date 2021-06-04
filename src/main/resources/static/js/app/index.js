@@ -1,20 +1,18 @@
 const main = {
 
-    youtubeParser(url) {
+    youtubeParser(url, ...groups) {
         const container = "[youtube::ID]"
-        const regExp = /^https?\:\/\/(?:www\.youtube(?:\-nocookie)?\.com\/|m\.youtube\.com\/|youtube\.com\/)?(?:ytscreeningroom\?vi?=|youtu\.be\/|vi?\/|user\/.+\/u\/\w{1,2}\/|embed\/|watch\?(?:.*\&)?vi?=|\&vi?=|\?(?:.*\&)?vi?=)([^#\&\?\n\/<>"']*)/i;
-        const match = url.match(regExp);
-        return (match && match[1].length == 11) ? container.replace("ID", match[1]) : url;
+        return (groups && groups[6].length == 11) ? container.replace("ID", groups[6]) : url;
     },
 
-    youtubeWrapper(match, p1) {
+    youtubeWrapper(match, id) {
         const container = `
         <div class="video-container">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/#ID#" title="YouTube video player"
             frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen></iframe>
         </div>`
-        return container.replace("#ID#", p1)
+        return container.replace("#ID#", id)
     },
 
     init() {

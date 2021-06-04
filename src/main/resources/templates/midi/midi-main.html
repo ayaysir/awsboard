@@ -35,7 +35,10 @@
             bottom: -5px;
             right: 0px;
             width: 100%;
-            /* background-color: rgba(255, 255, 255, 0.9); */
+            background: rgba( 111, 66, 193, 0.25 );
+            backdrop-filter: blur( 4.0px );
+            -webkit-backdrop-filter: blur( 4.0px );
+            border-top: 1px solid rgba( 255, 255, 255, 0.18 );
         }
 
         #audio-player {
@@ -190,7 +193,7 @@
             </tbody>
         </table>
 
-        <div id="play-window" class="card bg-primary mb-1">
+        <div id="play-window" class="card mb-1">
             <div class="card-body">
                 <p class="card-title" id="play-title">미디플레이어를 <span class="text-info"><strong>[홈 화면]</strong></span>에 등록해 사용해보세요.</p>
             </div>
