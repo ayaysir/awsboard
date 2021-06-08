@@ -115,7 +115,8 @@ public class IndexController {
 
             userId = loginUser.getId();
         }
-        logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("posts").userId(userId).ipAddress(remoteIp).build());
+        Long logId = logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("posts").userId(userId).ipAddress(remoteIp).build());
+        System.out.println("LogId: " + logId);
 
         System.out.println(remoteIp);
 

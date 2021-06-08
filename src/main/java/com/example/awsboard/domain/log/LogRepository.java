@@ -9,6 +9,10 @@ import java.util.List;
 public interface LogRepository extends JpaRepository<Log, Long> {
 
     // native query인 경우 테이블 이름도 소문자로 써야함
-    @Query(value = "select * from log a where a.board_name = :boardName and a.article_id = :articleId", nativeQuery = true)
+    @Query(value = "select * from log a where a.board_name = :boardName and a.article_id = :articleId and a.user_id != -99", nativeQuery = true)
     List<Log> getListGroupByBoardNameAndArticleId(@Param("boardName") String boardName, @Param("articleId") Long articleId);
+
+    @Query(value = "select * from log a where a.board_name = :boardName and a.article_id = :articleId and a.user_id = -99", nativeQuery = true)
+    List<Log> getListGroupByBoardNameAndArticleIdOfGuest(@Param("boardName") String boardName, @Param("articleId") Long articleId);
+
 }
