@@ -99,13 +99,18 @@ public class IndexController {
     }
 
     @GetMapping("/posts/view/{id}")
-    public String postView(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser, HttpServletRequest request) {
+    public String postView(@PathVariable Long id,
+                           Integer page,
+                           Model model,
+                           @LoginUser SessionUser loginUser,
+                           HttpServletRequest request) {
 
         PostsResponseDTO dto = postsService.findById(id);
         dto.setViewCount(logService.getViewCountByBoardNameAndArticleId("posts", dto.getId()));
         model.addAttribute("post", dto);
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("requestFrom", "posts");
+        model.addAttribute("page", page);
 
         Long userId = -99l;
         String remoteIp = request.getRemoteAddr();
@@ -116,9 +121,9 @@ public class IndexController {
             userId = loginUser.getId();
         }
         Long logId = logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("posts").userId(userId).ipAddress(remoteIp).build());
-        System.out.println("LogId: " + logId);
 
-        System.out.println(remoteIp);
+        System.out.println(">> RemoteIP: " + remoteIp);
+        System.out.println(">> currentPageNum: " + page);
 
         return "posts-view";
     }
@@ -128,15 +133,25 @@ public class IndexController {
      */
 
     @GetMapping("/notice")
-    public String noticeIndex(Model model, @LoginUser SessionUser user) {
+    public String noticeIndex(@RequestParam(value = "page", defaultValue = "1") Integer page, Model model, @LoginUser SessionUser user) {
         // 글 목록 전송
-        model.addAttribute("posts", noticeService.findAllDesc());
         model.addAttribute("boardTitle", "공지사항");
         model.addAttribute("requestFrom", "notice");
-
         // 사용자 정보: 위의 @LoginUser 어노테이션으로 대체
         // SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
+        // 페이지네이션
+        try {
+            Paginator paginator = new Paginator(PAGES_PER_BLOCK, POSTS_PER_PAGE, noticeService.count());
+            Map<String, Object> pageInfo = paginator.getFixedBlock(page);
+
+            model.addAttribute("pageInfo", pageInfo);
+        } catch(IllegalStateException e) {
+            model.addAttribute("pageInfo", null);
+            System.err.println(e);
+        }
+
+        model.addAttribute("posts", noticeService.findAllByOrderByIdDesc(page, POSTS_PER_PAGE));
 
         if(user != null) {
             model.addAttribute("userName", user.getName());
@@ -186,13 +201,14 @@ public class IndexController {
     }
 
     @GetMapping("/notice/view/{id}")
-    public String noticeView(@PathVariable Long id, Model model, @LoginUser SessionUser loginUser, HttpServletRequest request) {
+    public String noticeView(Integer page, @PathVariable Long id, Model model, @LoginUser SessionUser loginUser, HttpServletRequest request) {
 
         NoticeResponseDTO dto = noticeService.findById(id);
         dto.setViewCount(logService.getViewCountByBoardNameAndArticleId("notice", dto.getId()));
         model.addAttribute("post", dto);
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("requestFrom", "notice");
+        model.addAttribute("page", page);
 
         Long userId = -99l;
         String remoteIp = request.getRemoteAddr();
@@ -204,7 +220,6 @@ public class IndexController {
         }
 
         logService.save(LogSaveRequestDTO.builder().articleId(id).boardName("notice").userId(userId).ipAddress(remoteIp).build());
-
 
         return "posts-view";
     }
